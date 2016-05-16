@@ -1,16 +1,21 @@
 import json
+import ast
 from StringIO import StringIO
 
 def load():
     with open('dataset.json') as file:
-        data = json.load(file)
+        stri = file.read()
+        data = json.loads(stri, encoding='utf-8')
     return data
 
 def graph():
     all_graph = dict()
     data = load()
-    for name in data:
-        
+    print("LOAD FILE COMPLETE")
+    print(type(data))
+    print(str(data)[:50])
+    for name in data.keys():
+        print("READING "+name)
         graph = data[name]["graph"]
         all_graph.update(graph)
 
