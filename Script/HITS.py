@@ -105,10 +105,10 @@ def HITS2(graph,step,confidence=1.0e-6):
 
     diffa = np.abs(npa - nplastA).sum()
     diffh = np.abs(nph - nplastH).sum()
-    lastA = a
-    lastH = h
+    lastA = a.copy()
+    lastH = h.copy()
     
     if diffa <= confidence or diffh < confidence:
       done = 1
     
-  return time, a.values(), h.values()
+  return time, a , h
