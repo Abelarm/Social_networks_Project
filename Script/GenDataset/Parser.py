@@ -15,19 +15,38 @@ def read_links(html):
 def clean_text(text):
     #[a-zA-Z]*=\".*\"|[a-zA-Z]*\[.*\]|\"|
     #|.*:\/\/|:\/\/.*|.*#|#.*|
-    regexCode1 = compile(".*:url\(.*|.*[0-9]*\.?[0-9]*(em|px|dpi)|\{.*\}|.*=\".*|[a-zA-Z]*\[.*\]|.*--.*|:&.*|&.*|<.*|.*>|#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|\/\*.*|.*\*\/")
+    regexCode1 = compile(".*:url\(.*|url\(.*|src=.*|\$\(document\).*|.*[0-9]*\.?[0-9]*(em|px|dpi)|\{.*\}|.*=\".*|[a-zA-Z]*\[.*\]|.*--.*|:&.*|&.*|<.*|.*>|#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|\/\*.*|.*\*\/")
     regexCode2 = compile(".*;\/.*|.*{|\..*|.*=\'.*|\(-?.*-.*:.*\)|.*#|#.*|{.*|.*}")
     regexPunct = compile("\||-|\\|\.|\:|\/|\"|\'|,|;|_|\*|@|\(|\)|\[|\]|{|}|!|\?|&|%|=|#|\+")
     regexCSS = compile(".*\"|\".*|.*;|{.*|.*}|.*:|:.*")
     toret = []
     for x in text:
-	    if regexCSS.match(x):
-		    x = re.sub("\"|;|{|}|:","",x)
-		    if x in CSS:
-		        continue
-			if not regexCode1.match(x) and not regexCode2.match(x) and not regexPunct.match(x) and x not in STOPWORD:
-                toret.append(x)
-    
+
+        if x == "":
+            continue
+
+        if not regexCode1.match(x) and not regexCode2.match(x) and not regexPunct.match(x) and x not in STOPWORD:
+
+            if regexCSS.match(x):
+                x = sub("\"|;|{|}|:","",x)
+            if x in CSS or x=="":
+                continue
+
+            toret.append(x)
+
+    return toret
+
+
+def brutal_clean_text(text):
+
+    THECHOOSENONE = compile("[a-zA-Z0-9\-]*")
+    toret = []
+    for x in text:
+
+        matched = THECHOOSENONE.match(x)
+        if matched and  matched.group(0) == x:
+            toret.append(x)
+
     return toret
 
 
@@ -40,7 +59,7 @@ def read_content(html):
     #text = sub(r'<.*',' ',html)
     text = text.split()
     #print text[:20]
-    toret = clean_text(text)
+    toret = brutal_clean_text(text)
     return toret
 
 #This function removes from the given graph all the edges towards undefined pages

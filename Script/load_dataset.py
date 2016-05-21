@@ -16,7 +16,7 @@ def graph():
         
     return all_graph
 
-def inverted_():
+def inverted():
 
   data = load()
   return data["inv_db"]
@@ -31,4 +31,5 @@ def db():
 
    return all_db
 
-#dt=load()
+dt=inverted()
+print(dt.keys())
