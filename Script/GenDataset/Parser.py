@@ -1,7 +1,9 @@
 #!/usr/bin/python
 
 from re import findall, sub, compile
+
 from CSS import CSS
+from STOPWORD import STOPWORD
 
 #Find all links in a web page
 def read_links(html):
@@ -11,10 +13,16 @@ def read_links(html):
     return findall(r'<a .*?href=[\',\"](.*?)[\',\"].*?>',html)
 
 def clean_text(text):
-    regex = compile("&.*|<.*|#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|\/\*.*|.*\*\/")
+    #[a-zA-Z]*=\".*\"|[a-zA-Z]*\[.*\]|\"|
+    #|.*:\/\/|:\/\/.*|.*#|#.*|
+    regex = compile(".*:url\(.*|.*[0-9]*\.?[0-9]*(em|px)|\{.*\}|.*=\".*|[a-zA-Z]*\[.*\]|.*--.*|:&.*|&.*|<.*|.*>|#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|\/\*.*|.*\*\/")
+    regex2 = compile(".*;\/.*|.*{|\..*|.*=\'.*|\(-?.*-.*:.*\)|.*#|#.*|{.*|.*}")
+    regex3 = compile("\||-|\\|\.|\:|\/|\"|\'|,|;|_|\*|@|\(|\)|\[|\]|{|}|!|\?|&|%|=|#|\+")
+    regex4 = compile(".*:(relative|none|link|visited|top|bottom|left|right)")
+
     toret = []
     for x in text:
-        if not regex.match(x) and (x.split(":")[0]).replace("{","") not in CSS:
+        if not regex.match(x) and not regex4.match(x) and not regex3.match(x) and  not regex2.match(x) and x not in STOPWORD and (x.split(":")[0]).replace("{","") not in CSS:
             toret.append(x)
     return toret
 
@@ -23,8 +31,11 @@ def clean_text(text):
 def read_content(html):
     #The function sub substitues any occurrence of the first parameter in the string given as third parameter with an occurrence of the second parameter
     #The first parameter here is given as a regular expression and consists of any html tag
-    text = sub(r'<.*?>',' ',html)
+    
+    text = sub(r'<.*>',' ',html)
+    #text = sub(r'<.*',' ',html)
     text = text.split()
+    #print text[:20]
     toret = clean_text(text)
     return toret
 
