@@ -23,10 +23,10 @@ def create_link(dataset):
                        dataset[name1]["graph"][U[i]].add(V[i])
  
 
-siti = ["ARTS","BUSINESS","COMPUTERS","GAMES","HEALTH","HOME","KIDSANDTEENS","NEWS","RECREATION","REFERENCE","REGIONAL",
+siti = ["ARTS","BUSINESS","COMPUTERS","GAMES","HEALTH","HOME","KIDS","NEWS","RECREATION","REFERENCE","REGIONAL",
 "SCIENCE","SHOPPING","SOCIETY","SPORTS"]
 
-siti = ["SCIENCE"]
+#siti = ["KIDS"]
 
 dataset = dict()
 for name in siti:
@@ -43,8 +43,8 @@ create_link(dataset)
 print("------FINISHED CREATING-------")
 
 print("------START DUMPING-----")
-with open('dataset.json', 'w') as fp:
-        stri = json.dumps(dataset, ensure_ascii=False, encoding="utf-8", default = set_default)
+with open('../dataset.json', 'w') as fp:
+        stri = json.dumps(dataset, ensure_ascii=False, default = set_default)
         fp.write(stri)
 print("------DONE-----")
 

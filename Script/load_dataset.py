@@ -1,6 +1,5 @@
 import json
 import ast
-from StringIO import StringIO
 
 def load():
     with open('dataset.json') as file:
@@ -32,3 +31,5 @@ def db():
        all_db.update(db)
 
    return all_db
+
+#dt=load()
