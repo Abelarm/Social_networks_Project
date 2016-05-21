@@ -98,10 +98,10 @@ def HITS2(graph,step,confidence=1.0e-6):
 
     #Computes the distance between the old rank vector and the new rank vector in L_1 norm
 
-    npa = np.array(a.values())
-    nph = np.array(h.values())
-    nplastA = np.array(lastA.values())
-    nplastH = np.array(lastH.values())
+    npa = np.array(list(a.values()))
+    nph = np.array(list(h.values()))
+    nplastA = np.array(list(lastA.values()))
+    nplastH = np.array(list(lastH.values()))
 
     diffa = np.abs(npa - nplastA).sum()
     diffh = np.abs(nph - nplastH).sum()

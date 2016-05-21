@@ -3,7 +3,13 @@ import timeit
 from load_dataset import *
 
 graph =  graph()
-
+'''
+graph = dict()
+graph['x'] = {'y','z','w'}
+graph['y'] = {'x','w'}
+graph['z'] = {'x'}
+graph['w'] = {'y','z'}
+'''
 print("STARTING HITS")
 start_time = timeit.default_timer()
 time , a, h = HITS2(graph,1000,0.01)
