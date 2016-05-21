@@ -1,5 +1,4 @@
 import json
-import ast
 
 def load():
     with open('dataset.json') as file:
@@ -11,13 +10,10 @@ def graph():
     all_graph = dict()
     data = load()
     print("LOAD FILE COMPLETE")
-    print(type(data))
-    print(str(data)[:50])
     for name in data.keys():
-        print("READING "+name)
         graph = data[name]["graph"]
         all_graph.update(graph)
-
+        
     return all_graph
 
 

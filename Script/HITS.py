@@ -110,5 +110,7 @@ def HITS2(graph,step,confidence=1.0e-6):
     
     if diffa <= confidence or diffh < confidence:
       done = 1
+
+    print("Iteration: " + str(time) + " diff1: " + str(diffa) + " diffh " + str(diffh))
     
   return time, a , h
