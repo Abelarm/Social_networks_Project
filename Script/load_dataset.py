@@ -16,13 +16,16 @@ def graph():
         
     return all_graph
 
+def inverted_():
+
+  data = load()
+  return data["inv_db"]
 
 def db():
    
    all_db = dict()
    data = load()
    for name in data:
-       
        db = data[name]["db"]
        all_db.update(db)
 
