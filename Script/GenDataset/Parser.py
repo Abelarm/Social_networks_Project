@@ -15,15 +15,19 @@ def read_links(html):
 def clean_text(text):
     #[a-zA-Z]*=\".*\"|[a-zA-Z]*\[.*\]|\"|
     #|.*:\/\/|:\/\/.*|.*#|#.*|
-    regex = compile(".*:url\(.*|.*[0-9]*\.?[0-9]*(em|px)|\{.*\}|.*=\".*|[a-zA-Z]*\[.*\]|.*--.*|:&.*|&.*|<.*|.*>|#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|\/\*.*|.*\*\/")
-    regex2 = compile(".*;\/.*|.*{|\..*|.*=\'.*|\(-?.*-.*:.*\)|.*#|#.*|{.*|.*}")
-    regex3 = compile("\||-|\\|\.|\:|\/|\"|\'|,|;|_|\*|@|\(|\)|\[|\]|{|}|!|\?|&|%|=|#|\+")
-    regex4 = compile(".*:(relative|none|link|visited|top|bottom|left|right)")
-
+    regexCode1 = compile(".*:url\(.*|.*[0-9]*\.?[0-9]*(em|px|dpi)|\{.*\}|.*=\".*|[a-zA-Z]*\[.*\]|.*--.*|:&.*|&.*|<.*|.*>|#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})|\/\*.*|.*\*\/")
+    regexCode2 = compile(".*;\/.*|.*{|\..*|.*=\'.*|\(-?.*-.*:.*\)|.*#|#.*|{.*|.*}")
+    regexPunct = compile("\||-|\\|\.|\:|\/|\"|\'|,|;|_|\*|@|\(|\)|\[|\]|{|}|!|\?|&|%|=|#|\+")
+    regexCSS = compile(".*\"|\".*|.*;|{.*|.*}|.*:|:.*")
     toret = []
     for x in text:
-        if not regex.match(x) and not regex4.match(x) and not regex3.match(x) and  not regex2.match(x) and x not in STOPWORD and (x.split(":")[0]).replace("{","") not in CSS:
-            toret.append(x)
+	    if regexCSS.match(x):
+		    x = re.sub("\"|;|{|}|:","",x)
+		    if x in CSS:
+		        continue
+			if not regexCode1.match(x) and not regexCode2.match(x) and not regexPunct.match(x) and x not in STOPWORD:
+                toret.append(x)
+    
     return toret
 
 

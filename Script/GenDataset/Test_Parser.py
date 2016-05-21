@@ -53,16 +53,19 @@ for name in siti:
 	print("Parsing: " + name)
 	graph,db = read_wibbi(name+".pages")
 	dataset[name] = {"graph":graph,"db":db}
-  invert_db(dataset)
 	print("----------------")
 
 print("------FINISHED PARSING-----")
 
-
 print("------CREATING FAKE LINK -----")
 create_link(dataset)
 print("------FINISHED CREATING-------")
-
+print("------INVERTING DATABASE------")
+invert_db(dataset)
+print("------INVERTING FINISHED------")
+li = list(dataset["inv_db"].keys())
+for i in range(2):
+    print(str(li[i])+": "+str(dataset["inv_db"][li[i]]))
 print("------START DUMPING-----")
 with open('../dataset.json', 'w') as fp:
         stri = json.dumps(dataset, ensure_ascii=False, default = set_default)
