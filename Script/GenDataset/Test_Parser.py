@@ -46,7 +46,7 @@ def invert_db(dataset):
 siti = ["ARTS","BUSINESS","COMPUTERS","GAMES","HEALTH","HOME","KIDS","NEWS","RECREATION","REFERENCE","REGIONAL",
 "SCIENCE","SHOPPING","SOCIETY","SPORTS"]
 
-siti = ["SOCIETY","SPORTS"]
+#siti = ["SOCIETY","SPORTS"]
 
 dataset = dict()
 for name in siti:
@@ -63,9 +63,6 @@ print("------FINISHED CREATING-------")
 print("------INVERTING DATABASE------")
 invert_db(dataset)
 print("------INVERTING FINISHED------")
-li = list(dataset["inv_db"].keys())
-for i in range(2):
-    print(str(li[i])+": "+str(dataset["inv_db"][li[i]]))
 print("------START DUMPING-----")
 with open('../dataset.json', 'w') as fp:
         stri = json.dumps(dataset, ensure_ascii=False, default = set_default)

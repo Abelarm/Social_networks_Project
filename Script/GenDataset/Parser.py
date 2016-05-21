@@ -44,7 +44,7 @@ def brutal_clean_text(text):
     for x in text:
 
         matched = THECHOOSENONE.match(x)
-        if matched and  matched.group(0) == x:
+        if matched and matched.group(0) == x and len(x)!=1:
             toret.append(x)
 
     return toret
@@ -59,7 +59,8 @@ def read_content(html):
     #text = sub(r'<.*',' ',html)
     text = text.split()
     #print text[:20]
-    toret = brutal_clean_text(text)
+    toret = clean_text(text)
+    toret = brutal_clean_text(toret)
     return toret
 
 #This function removes from the given graph all the edges towards undefined pages
