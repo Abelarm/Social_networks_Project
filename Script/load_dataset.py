@@ -67,7 +67,7 @@ def dump_full_graph():
   print("------FINISHED FULLGRAPH-----")
   print("------START DUMPING-----")
   with open('full_graph.json', 'w') as fp:
-          stri = json.dumps(full_graph, ensure_ascii=False, default = set_default)
+          stri = json.dumps(full_graph, ensure_ascii=False)
           fp.write(stri)
   print("------DONE-----")
 
