@@ -41,6 +41,12 @@ def HITS1(graph,step,confidence=1.0e-6):
   return time, a.flatten().tolist(), h.flatten().tolist()
 
 def HITS2(graph,step,confidence=1.0e-6):
+
+  print("-----START LOADING FULLGRAPH------")
+  grafo = get_fullgraph()
+  graph = grafo
+  print("-----FINISHED LOADING FULLGRAPH------")
+
   nodes=graph.keys()
   n=len(nodes)
   done = 0
@@ -57,10 +63,7 @@ def HITS2(graph,step,confidence=1.0e-6):
     h[i] = 1.0 
     lastH[i] = 0.0
 
-  print("-----START LOADING FULLGRAPH------")
-  grafo = fullgraph()
-  graph = graf
-  print("-----FINISHED LOADING FULLGRAPH------")
+
   
   while not done and time < step:
     time += 1

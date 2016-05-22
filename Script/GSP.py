@@ -160,6 +160,7 @@ def best_response_competitive(name, adv_value, slot_ctrs, history):
     if preferred_slot == -1:
         return 0
     
+    print(utility,adv_value,payment)
     return max(utility, adv_value)
 
 def best_response_altruistic(name, adv_value, slot_ctrs, history):

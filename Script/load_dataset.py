@@ -6,7 +6,7 @@ def load():
         data = json.loads(stri, encoding='utf-8')
     return data
 
-def graph():
+def get_graph():
     all_graph = dict()
     data = load()
     print("LOAD FILE COMPLETE")
@@ -15,7 +15,7 @@ def graph():
         all_graph.update(graph)
     return all_graph
 
-def fullgraph():
+def get_fullgraph():
   with open('fullgraph.json') as file:
         stri = file.read()
         fullgraph = json.loads(stri, encoding='utf-8')
@@ -26,7 +26,7 @@ def inverted():
   data = load()
   return data["inv_db"]
 
-def db():
+def get_db():
    
    all_db = dict()
    data = load()
@@ -72,4 +72,4 @@ def dump_full_graph():
   print("------DONE-----")
 
 
-dump_full_graph()
+#dump_full_graph()
