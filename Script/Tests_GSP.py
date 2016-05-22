@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-from GSP import *
+from GSP import gsp
+from Bots import *
 
 #Slots' clickthrough rates
 slot_ctrs=dict()

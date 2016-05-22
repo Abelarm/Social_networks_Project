@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from random import randint, random
-from Balance import balance
+from Balance import balance_fpa
 
 #All possible queries
 queries=["prova","test","esempio"]
@@ -56,7 +56,7 @@ revenue=0 #The current revenue of the auctioneer
 
 for i in range(num_query):
     #For each query we use the balance algorithm for evaluating the assignment and the payments
-    query_winners, query_pay = balance(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, query_sequence[i])
+    query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, query_sequence[i])
     
     for j in query_winners.keys():
         #We now simulate an user clicking on the ad with a probability that is equivalent to the slot's clickthrough rate
