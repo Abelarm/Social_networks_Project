@@ -16,7 +16,7 @@ def get_graph():
     return all_graph
 
 def get_fullgraph():
-  with open('fullgraph.json') as file:
+  with open('full_graph.json') as file:
         stri = file.read()
         fullgraph = json.loads(stri, encoding='utf-8')
   return fullgraph
