@@ -88,6 +88,8 @@ def HITS2(graph,step,confidence=1.0e-6):
     for n in nodes:
       outgoing = graph[n]["outgoing"]
       h[n] = 0
+      if type(outgoing) == float:
+        outgoing=[]
       for o in outgoing:
         h[n] += a[o]
       if h[n] > maxH:
@@ -96,9 +98,9 @@ def HITS2(graph,step,confidence=1.0e-6):
     for n in nodes:
       h[n]/=maxH
 
-    print("A: " +str(a))
-    print("H: " +str(h))
-    raw_input()
+    #print("A: " +str(a))
+    #print("H: " +str(h))
+    #raw_input()
 
     #Computes the distance between the old rank vector and the new rank vector in L_1 norm
 
