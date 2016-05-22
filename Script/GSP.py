@@ -1,4 +1,6 @@
 #!/usr/bin/python
+import sys
+from random import randint
 
 #Implements a GSP auction
 def gsp(slot_ctrs, adv_bids):
@@ -113,7 +115,7 @@ def best_response_competitive(name, adv_value, slot_ctrs, history):
     #We suppose that adevertisers simply bid their value.
     #Other possibilities would be to bid 0 or to choose a bid randomly between 0 and their value.
     if step == 0:
-        return 0
+        return adv_value
     
     #Initialization
     adv_slots=history[step-1]["adv_slots"]
@@ -150,7 +152,7 @@ def best_response_competitive(name, adv_value, slot_ctrs, history):
     #2) Evaluate for each slot, which one gives to the advertiser the largest utility
         new_utility = slot_ctrs[sort_slots[i]]*(adv_value-tmp_pay)
         
-        print ("OLD UTILITY: " +str(utility) +" NEW UTILITY: " +str(new_utility))
+        #print ("OLD UTILITY: " +str(utility) +" NEW UTILITY: " +str(new_utility))
         if new_utility > utility:
             utility = new_utility
             preferred_slot = i
@@ -162,13 +164,13 @@ def best_response_competitive(name, adv_value, slot_ctrs, history):
         print("NO PREFERED")
         return 0
     
-    print(utility,adv_value,payment)
+    #print(utility,adv_value,payment)
     return max(utility, payment)
 
 def best_response_altruistic(name, adv_value, slot_ctrs, history):
     
     step = len(history)
-    
+
     #If this is the first step there is no history and no best-response is possible
     #We suppose that adevertisers simply bid their value.
     #Other possibilities would be to bid 0 or to choose a bid randomly between 0 and their value.
@@ -178,10 +180,11 @@ def best_response_altruistic(name, adv_value, slot_ctrs, history):
     #Initialization
     adv_slots=history[step-1]["adv_slots"]
     adv_bids=history[step-1]["adv_bids"]
-    
+
     sort_bids=sorted(adv_bids.values(), reverse=True)
     sort_slots=sorted(slot_ctrs.keys(), key=slot_ctrs.__getitem__, reverse=True)
-    
+
+
     #Saving the index of slots assigned at the advertiser in the previous auction
     if name not in adv_slots.keys():
         last_slot=-1
@@ -221,4 +224,60 @@ def best_response_altruistic(name, adv_value, slot_ctrs, history):
         return 0
     
     return min(utility, payment)
+
+
+def competitive(name, adv_value, slot_ctrs, history):
+    
+    step = len(history)
+    
+    #If this is the first step there is no history and no best-response is possible
+    #We suppose that adevertisers simply bid their value.
+    #Other possibilities would be to bid 0 or to choose a bid randomly between 0 and their value.
+    if step == 0:
+        return adv_value
+    
+    #Initialization
+    adv_slots=history[step-1]["adv_slots"]
+    adv_bids=history[step-1]["adv_bids"]
+    
+    sort_bids=sorted(adv_bids.values(), reverse=True)
+    sort_slots=sorted(slot_ctrs.keys(), key=slot_ctrs.__getitem__, reverse=True)
+    
+    return sort_bids[0] + 1
+
+
+def budget_saving(name, adv_value, slot_ctrs, history):
+    
+    step = len(history)
+    
+    #If this is the first step there is no history and no best-response is possible
+    #We suppose that adevertisers simply bid their value.
+    #Other possibilities would be to bid 0 or to choose a bid randomly between 0 and their value.
+    if step == 0:
+        return 0
+    
+    #Initialization
+    adv_slots=history[step-1]["adv_slots"]
+    adv_bids=history[step-1]["adv_bids"]
+    
+    min_value = sys.float_info.max
+    min_name = None
+    for bid in adv_bids:
+        if not bid in adv_slots and adv_bids[bid]<min_value:
+            min_value = adv_bids[bid]
+            min_name = bid
+
+    return min(min_value,adv_value)
+
+def random(name, adv_value, slot_ctrs, history):
+
+    all_bids = []
+    for i in range(len(history)):
+        for b in history[i]["adv_bids"].values():
+            all_bids.append(b)
+
+    maxbidEVER= max(all_bids)
+
+    return randint(0,maxbidEVER+1)
+
 
