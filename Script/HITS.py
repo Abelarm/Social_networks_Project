@@ -67,6 +67,7 @@ def HITS2(graph,step,confidence=1.0e-6):
 
   
   while not done and time < step:
+    print("Step: " + str(time)+"/"+str(step))
     time += 1
     
     maxA = -1
