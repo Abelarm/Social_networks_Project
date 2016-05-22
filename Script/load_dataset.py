@@ -24,7 +24,7 @@ def get_fullgraph():
 def get_inverted():
 
 	data = load()
-	print len(data["inv_db"].keys())
+	print(len(data["inv_db"].keys()))
 	return data["inv_db"]
 
 def get_db():

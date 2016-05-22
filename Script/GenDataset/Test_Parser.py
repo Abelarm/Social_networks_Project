@@ -25,7 +25,7 @@ def create_link(dataset):
 
 def invert_db(dataset):
   new_db = dict()
-  
+  azz = 0
   for name in dataset:
     db = dataset[name]["db"]
     
@@ -36,11 +36,13 @@ def invert_db(dataset):
 
         if w not in new_db:
           new_db[w]=dict()
-
+        else:
+          azz += 1
         count = db[k].count(w)
         new_db[w][k] = float(count)/len_k
 
   print(len(new_db.keys()))
+  print(azz)
   dataset["inv_db"] = new_db
 
 
