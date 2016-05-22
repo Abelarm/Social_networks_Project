@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+from load_dataset import fullgraph
 
 def HITS1(graph,step,confidence=1.0e-6):
   n = len(graph)
@@ -56,7 +57,7 @@ def HITS2(graph,step,confidence=1.0e-6):
     h[i] = 1.0 
     lastH[i] = 0.0
 
-  graph = calcola_fullgraph(graph)
+  graph = fullgraph()
   
   while not done and time < step:
     time += 1
