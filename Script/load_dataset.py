@@ -21,7 +21,7 @@ def get_fullgraph():
 			fullgraph = json.loads(stri, encoding='utf-8')
 	return fullgraph
 
-def inverted():
+def get_inverted():
 
 	data = load()
 	print len(data["inv_db"].keys())
@@ -84,4 +84,4 @@ def dump_full_graph():
 	print("------DONE-----")
 
 
-print(count_word())
+print(len(get_inverted().keys()))
