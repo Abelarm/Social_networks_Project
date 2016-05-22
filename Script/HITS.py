@@ -57,7 +57,9 @@ def HITS2(graph,step,confidence=1.0e-6):
     h[i] = 1.0 
     lastH[i] = 0.0
 
+  print("-----START LOADING FULLGRAPH------")
   graph = fullgraph()
+  print("-----FINISHED LOADING FULLGRAPH------")
   
   while not done and time < step:
     time += 1
