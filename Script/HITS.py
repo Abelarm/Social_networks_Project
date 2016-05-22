@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from load_dataset import fullgraph
+from load_dataset import get_fullgraph
 
 def HITS1(graph,step,confidence=1.0e-6):
   n = len(graph)
