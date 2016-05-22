@@ -11,7 +11,7 @@ graph['k'] = {}
 
 print("STARTING HITS")
 start_time = timeit.default_timer()
-time , a, h = HITS2(graph,1000)
+time , a, h = HITS2(graph,1000,0.001)
 elapsed= timeit.default_timer() - start_time
 print("HITS2 elapsed: " + str(elapsed))
 print("Time:" + str(time))

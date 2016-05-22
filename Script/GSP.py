@@ -137,7 +137,7 @@ def best_response_competitive(name, adv_value, slot_ctrs, history):
     #   - he changes his bid so that that slot is assigned to him
     #   - no other advertiser change the bid
     for i in range(len(sort_slots)):
-        
+        #print("ENTRO")
         if i < last_slot: #If I take a slot better than the one previously assigned to me
             tmp_pay = sort_bids[i] #then, I must pay for that slot the bid of the advertiser at which that slot was previously assigned
             
@@ -150,6 +150,7 @@ def best_response_competitive(name, adv_value, slot_ctrs, history):
     #2) Evaluate for each slot, which one gives to the advertiser the largest utility
         new_utility = slot_ctrs[sort_slots[i]]*(adv_value-tmp_pay)
         
+        print ("OLD UTILITY: " +str(utility) +" NEW UTILITY: " +str(new_utility))
         if new_utility > utility:
             utility = new_utility
             preferred_slot = i
@@ -158,10 +159,11 @@ def best_response_competitive(name, adv_value, slot_ctrs, history):
     #3) Evaluate which bid to choose among the ones that allows the advertiser to being assigned the slot selected at the previous step
     #ultima slot
     if preferred_slot == -1:
+        print("NO PREFERED")
         return 0
     
     print(utility,adv_value,payment)
-    return max(utility, adv_value)
+    return max(utility, payment)
 
 def best_response_altruistic(name, adv_value, slot_ctrs, history):
     
@@ -218,5 +220,5 @@ def best_response_altruistic(name, adv_value, slot_ctrs, history):
     if preferred_slot == -1:
         return 0
     
-    return min(adv_value, payment)
+    return min(utility, payment)
 
