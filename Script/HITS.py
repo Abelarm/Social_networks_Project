@@ -19,6 +19,7 @@ def HITS1(graph,step,confidence=1.0e-6):
   lastH = np.zeros((n,1))
     
   while not done and time < step:
+    print("Step: " + str(time)+"/"+str(step))
     time += 1
 
     a = np.dot(L.transpose(),h)
