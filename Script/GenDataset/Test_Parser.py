@@ -36,13 +36,10 @@ def invert_db(dataset):
 
         if w not in new_db:
           new_db[w]=dict()
-        else:
-          azz += 1
+
         count = db[k].count(w)
         new_db[w][k] = float(count)/len_k
 
-  print(len(new_db.keys()))
-  print(azz)
   dataset["inv_db"] = new_db
 
 

@@ -82,6 +82,3 @@ def dump_full_graph():
 					stri = json.dumps(full_graph, ensure_ascii=False)
 					fp.write(stri)
 	print("------DONE-----")
-
-
-print(len(get_inverted().keys()))
