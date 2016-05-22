@@ -29,7 +29,7 @@ def invert_db(dataset):
   for name in dataset:
     db = dataset[name]["db"]
     
-    for  k in db.keys():
+    for k in db:
       len_k = len(db[k])
       
       for w in db[k]:
@@ -40,6 +40,7 @@ def invert_db(dataset):
         count = db[k].count(w)
         new_db[w][k] = float(count)/len_k
 
+  print(len(new_db.keys()))
   dataset["inv_db"] = new_db
 
 
