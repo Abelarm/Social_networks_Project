@@ -44,10 +44,13 @@ def best_response(name, adv_value, slot_ctrs, history, query):
             tmp_pay = 0
             
         else: #If I take the slot as before or a worse one (but not the last)
-            tmp_pay = sort_bids[i+1] #then, I must pay for that slot the bid of the next advertiser
+            if len(sort_bids)==1:
+                tmp_pay = sort_bids[0]
+            else:
+                tmp_pay = sort_bids[i+1] #then, I must pay for that slot the bid of the next advertiser
         
     #2) Evaluate for each slot, which one gives to the advertiser the largest utility
-        new_utility = slot_ctrs[sort_slots[i]]*(adv_value-tmp_pay)
+        new_utility = slot_ctrs[query][sort_slots[i]]*(adv_value-tmp_pay)
         
         if new_utility > utility:
             utility = new_utility
@@ -239,7 +242,7 @@ def competitor_budget(name, adv_value, budget, current_budget, slot_ctrs, histor
         return best_response(name, adv_value, slot_ctrs, query)
 
 
-def preferential_competitor(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query)
+def preferential_competitor(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query):
     if adv_value > threshold:
         return competitor(name, adv_value, slot_ctrs, history, query)
     else:
@@ -254,7 +257,7 @@ def best_competitor_budget(name, adv_value, budget, current_budget, slot_ctrs, h
         return best_response(name, adv_value, slot_ctrs, query)
 
 
-def best_preferential_competitor(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query)
+def best_preferential_competitor(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query):
     if adv_value > threshold:
         return best_competitor(name, adv_value, slot_ctrs, history, query)
     else:
