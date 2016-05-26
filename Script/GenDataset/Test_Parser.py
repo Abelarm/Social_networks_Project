@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
-
+from collections import OrderedDict
 from Parser import read_wibbi
 import json
 import random
+import operator
 
 def set_default(obj):
 	if isinstance(obj,set):
@@ -25,6 +26,7 @@ def create_link(dataset):
 
 def invert_db(dataset):
   new_db = dict()
+  temp_db = dict()
   azz = 0
   for name in dataset:
     db = dataset[name]["db"]
@@ -34,12 +36,15 @@ def invert_db(dataset):
       
       for w in db[k]:
 
-        if w not in new_db:
-          new_db[w]=dict()
+        if w not in temp_db:
+          temp_db[w]=dict()
 
         count = db[k].count(w)
-        new_db[w][k] = float(count)/len_k
-
+        temp_db[w][k] = float(count)/len_k
+  
+  for w in temp_db:
+    sorted_docs = OrderedDict(sorted(temp_db[w].items(), key=operator.itemgetter(1), reverse=True))
+    new_db[w] = sorted_docs
   dataset["inv_db"] = new_db
 
 

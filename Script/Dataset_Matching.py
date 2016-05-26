@@ -26,7 +26,7 @@ import operator
 ###BEST MATCH###         
 def best_match(query, threshold, word_advs):
     adv_weights = dict()
-    best_docs = set()
+    best_docs = OrderedDict()
     
     query_words = query.split()
     
@@ -44,12 +44,47 @@ def best_match(query, threshold, word_advs):
         #if the document's weight is more than threshold
         #and we haven't yet reached 20 documents
         if sorted_docs[doc]>=threshold and count < 20:
-            best_docs.add(doc)
+            best_docs[doc] = sorted_docs[doc]
             count += 1
         #this document and all the following are not more than threshold (since docs are in decreasing order)
         else:
             break
     return best_docs
 
-def improved_best_match(query, threshold):
-    return 0
+###BEST MATCH###         
+def improved_best_match(query, threshold, word_advs):
+    adv_weights = dict()
+    best_docs = OrderedDict()
+    
+    query_words = query.split()
+    
+    #computing impact of query_words as the maximum frequency for that word
+    temp = dict()
+    for word in query_words:
+        #impact is first frequency of word, since in decreasing order
+        temp[word] = word_advs[word].values()[0]
+    #sorting impacts in decreasing order
+    impacts = OrderedDict(sorted(temp.items(), key=operator.itemgetter(1), reverse=True))
+    
+    #consider the first 20 documents in the index of the first query term
+    #if the first query term has an index with less than 20 documents
+    #then complete the list of 20 documents with the first documents in
+    #the index of the next query term
+    taken_count = 0
+    taken_docs = OrderedDict()
+    for word in impacts:
+        for doc in word_advs[word][:20] and taken_count<=20:
+            taken.add()#TODO
+    #We sort all documents by value, in decreasing order
+    sorted_docs = OrderedDict(sorted(adv_weights.items(), key=operator.itemgetter(1), reverse=True))
+    count = 0
+    for doc in sorted_docs:
+        #if the document's weight is more than threshold
+        #and we haven't yet reached 20 documents
+        if sorted_docs[doc]>=threshold and count < 20:
+            best_docs[doc] = sorted_docs[doc]
+            count += 1
+        #this document and all the following are not more than threshold (since docs are in decreasing order)
+        else:
+            break
+    return best_docs
