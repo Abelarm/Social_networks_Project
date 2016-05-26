@@ -1,9 +1,10 @@
 import json
+from collections import OrderedDict
 
 def load():
 		with open('dataset.json') as file:
 				stri = file.read()
-				data = json.loads(stri, encoding='utf-8')
+				data = json.loads(stri,object_pairs_hook=OrderedDict, encoding='utf-8')
 		return data
 
 def get_graph():

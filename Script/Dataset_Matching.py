@@ -51,9 +51,16 @@ def best_match(query, threshold, word_advs):
             break
     return best_docs
 
+def compute_weight(impacts, word_advs, doc):
+    weight = 0
+    for word in impacts:
+        if doc in word_advs[word]:
+            #print(word_advs[word])
+            weight += word_advs[word][doc]
+    return weight
+    
 ###BEST MATCH###         
-def improved_best_match(query, threshold, word_advs):
-    adv_weights = dict()
+def improved_best_match(query, word_advs):
     best_docs = OrderedDict()
     
     query_words = query.split()
@@ -62,29 +69,58 @@ def improved_best_match(query, threshold, word_advs):
     temp = dict()
     for word in query_words:
         #impact is first frequency of word, since in decreasing order
-        temp[word] = word_advs[word].values()[0]
+        temp[word] = list(word_advs[word].values())[0]
     #sorting impacts in decreasing order
     impacts = OrderedDict(sorted(temp.items(), key=operator.itemgetter(1), reverse=True))
+    print(impacts)
     
     #consider the first 20 documents in the index of the first query term
     #if the first query term has an index with less than 20 documents
     #then complete the list of 20 documents with the first documents in
     #the index of the next query term
+    #Then compute the score for each of these documents
     taken_count = 0
-    taken_docs = OrderedDict()
-    for word in impacts:
-        for doc in word_advs[word][:20] and taken_count<=20:
-            taken.add()#TODO
+    temp_weights = dict()
+    adv_weights = OrderedDict()
+    to_consider = ""
+    flag = False
+    docs = dict()
+    rem_len = 20
+    for index, word in enumerate(impacts):
+        print(word,rem_len)
+        while rem_len > 0:
+            print("TAKING DOCUMENTS from "+word)
+            keys = list(word_advs[word].keys())
+            for k in keys:
+                docs[k] = compute_weight(impacts, word_advs, k)
+                rem_len -= 1
+                if rem_len == 0:
+                    break;
+        to_consider = list(impacts.keys())[index+1]
+        break        
+    
+    print (docs)
+    print (to_consider)
+   
+    '''
+    while taken_count<=20:
+        for word in impacts:
+            #Until I have not reached 20 documents
+            #I take the missing documents from the current word
+            for doc in word_advs:
+                weight = 0
+                #I compute the weight of current document
+                
+                taken_count +=1
+                #if with this document I reached 20 documents
+                if taken_count == 20:
+                    to_consider = str(list(impacts.keys())[list(impacts.keys()).index(word)+1])
+                    break
+          
     #We sort all documents by value, in decreasing order
     sorted_docs = OrderedDict(sorted(adv_weights.items(), key=operator.itemgetter(1), reverse=True))
-    count = 0
-    for doc in sorted_docs:
-        #if the document's weight is more than threshold
-        #and we haven't yet reached 20 documents
-        if sorted_docs[doc]>=threshold and count < 20:
-            best_docs[doc] = sorted_docs[doc]
-            count += 1
-        #this document and all the following are not more than threshold (since docs are in decreasing order)
-        else:
-            break
+    
+    if to_consider.equals(""):
+        return sorted_docs
     return best_docs
+    '''
