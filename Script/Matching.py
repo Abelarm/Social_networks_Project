@@ -22,12 +22,13 @@
 #or we look for document / advertiser' requests that are "good" match, but not necessarily exact.
 
 ###EXACT MATCH###
-
+query_advs = dict()
+word_advs = dict()
 #We create an inverted index with an entry for every query search on which advertisers requested to appear
 def create_query_advs():
     
-    infile = open(database.txt)
-    query_advs = dict()
+    infile = open("database.txt")
+    global query_advs
     
     for line in infile:
         name_list = line.split(' ',1) #It splits the line in two elements: the first contains the name of the advertiser, the second a list of query searches
@@ -55,8 +56,8 @@ def exact_match(query):
 
 #We create an inverted index with an entry for every word of a document or for any word on which advertisers requested to appear
 def create_word_advs():
-    infile = open(database.txt)
-    word_advs = dict()
+    infile = open("database.txt")
+    global word_advs
     
     for line in infile:
         name_list = line.split(' ',1)
@@ -76,7 +77,7 @@ def create_word_advs():
                 #word_advs[word].add({"freq":fr, "name":name})
                 #It would be possible to save not only the name but also the occurrence of the word in the document / advertiser's request.
                 #In this case, we need to associate each name with an accumulator that counts the number of occurrence of the words.
-    
+                
 def best_match(query, threshold):
     adv_weights = dict()
     best_docs = set()
@@ -86,12 +87,11 @@ def best_match(query, threshold):
     #For every word we look at each document in the list and we increment the document's weight
     for word in query_words:
         for doc in word_advs[word]:
-            if doc not in adv_weights.keys()
+            if doc not in adv_weights.keys():
                 adv_weights[doc] = 1
             else:
                 adv_weights[doc] += 1
             #If we would like to count the occurrences, then we must increment the weights not by 1, but by the number of occurrence of that word in the document
-                
             #We use a threshold to choose which document must be returned
             if adv_weights[doc] >= threshold:
                 best_docs.add(doc)
