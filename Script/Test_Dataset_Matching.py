@@ -3,7 +3,7 @@ from load_dataset import get_inverted
 from Dataset_Matching import *
 
 inverted_db = get_inverted()
-query = "United Nations resolution China ban weapons"
+query = "UN resolution China ban weapons"
 print("QUERY: "+query)
 
 '''

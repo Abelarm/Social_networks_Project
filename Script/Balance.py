@@ -49,11 +49,13 @@ def balance_gsp(slot_ctrs, adv_bids, adv_sbudgets, adv_cbudgets, query):
     sorted_slot = sorted(slot_ctrs[query].keys(), key=slot_ctrs[query].__getitem__, reverse=True)
     sorted_advs = sorted(psi.keys(), key=psi.__getitem__, reverse = True)
     
+
+
     for i in range(min(len(sorted_slot),len(sorted_advs))):
         query_winners[sorted_slot[i]] = sorted_advs[i]
         if i == len(sorted_advs) - 1: #If it is the last advertiser, the payment is 0
             query_pay[sorted_advs[i]]=0
         else: # Else the payment is the slot of the next advertiser
-            query_pay[sorted_advs[i]]=adv_bids[query][sort_advs[i+1]]
+            query_pay[sorted_advs[i]]=adv_bids[query][sorted_advs[i+1]]
     
     return query_winners, query_pay
