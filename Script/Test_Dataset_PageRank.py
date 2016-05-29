@@ -8,13 +8,13 @@ import timeit
 graph = get_graph()
 
 start_time = timeit.default_timer()
-print("---------DUMPING RESULT---------")
+print("---------STARTING PAGERANK---------")
 time2, rank2 = pageRank2(graph,0.85,75,0)
 print("---------FINISHED PAGERANK---------")
 elapsed2 = timeit.default_timer() - start_time
 print (elapsed2)
 
 print("---------DUMPING RESULT---------")
-with open('PageRank.json','w') as PR:
+with open('PageRank.json','w') as fp:
 	json.dump(rank2,fp)
 print("---------FINISHED DUMPING---------")
