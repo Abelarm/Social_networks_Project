@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
 from random import randint, random, uniform
-from Balance import balance_gsp
+from Balance import *
 from Bots import *
 
 #All possible queries
 queries=["prova","test","esempio"]
-
+tp = "gsp"
 #For each query, lists the available slots and their clickthrough rate
 slot_ctrs=dict()
 slot_ctrs["prova"]=dict()
@@ -72,12 +72,14 @@ for i in range(num_query):
     
     adv_bids[current_query]=dict()
     for adv in adv_values[current_query]:
-            adv_bids[current_query][adv] = adv_bots[adv](adv,adv_values[current_query][adv],slot_ctrs,history, current_query)
+        adv_bids[current_query][adv] = adv_bots[adv](adv,adv_values[current_query][adv],slot_ctrs,history, current_query, tp)
 
     #For each query we use the balance algorithm for evaluating the assignment and the payments
     #query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, query_sequence[i])
-    query_winners, query_pay = balance_gsp(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
-    
+    if tp ==  "gsp":
+        query_winners, query_pay = balance_gsp(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
+    elif tp == "fpa":
+        query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
     #Update the history
     history.append(dict())
     history[i][current_query]=dict()

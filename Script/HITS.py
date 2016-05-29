@@ -43,11 +43,6 @@ def HITS1(graph,step,confidence=1.0e-6):
 
 def HITS2(graph,step,confidence=1.0e-6):
 
-  print("-----START LOADING FULLGRAPH------")
-  grafo = get_fullgraph()
-  graph = grafo
-  print("-----FINISHED LOADING FULLGRAPH------")
-
   nodes=graph.keys()
   n=len(nodes)
   done = 0
@@ -67,7 +62,7 @@ def HITS2(graph,step,confidence=1.0e-6):
 
   
   while not done and time < step:
-    print("Step: " + str(time)+"/"+str(step))
+    #print("Step: " + str(time)+"/"+str(step))
     time += 1
     
     maxA = -1
@@ -119,6 +114,6 @@ def HITS2(graph,step,confidence=1.0e-6):
     if diffa <= confidence or diffh < confidence:
       done = 1
 
-    #print("Iteration: " + str(time) + " diff1: " + str(diffa) + " diffh " + str(diffh))
+    print("Iteration: " + str(time) +"/" +str(step) + " diffa: " + str(diffa) + " diffh " + str(diffh))
     
   return time, a , h
