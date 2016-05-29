@@ -2,6 +2,7 @@ import json
 from collections import OrderedDict
 
 def load():
+		print ("START LOADING")
 		with open('dataset.json') as file:
 				stri = file.read()
 				data = json.loads(stri,object_pairs_hook=OrderedDict, encoding='utf-8')
