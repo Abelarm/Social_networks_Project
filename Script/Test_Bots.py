@@ -3,7 +3,7 @@
 from random import randint, random, uniform
 from Balance import *
 from Bots import *
-
+'''
 #All possible queries
 queries=["prova","test","esempio"]
 tp = "gsp"
@@ -52,50 +52,53 @@ adv_bots["z"] = budget_saving
 
 #It denotes the lenght of the sequence of queries that we will consider
 num_query=10
-history=[]
-adv_bids=dict()
+'''
 
-#Generate a random sequence of num_query queries, with each query selected from the list queries
-query_sequence=[]
-for i in range(num_query):
-    #query_sequence.append("prova")
-    query_sequence.append(queries[randint(0,len(queries)-1)])
-                          
-print(query_sequence)
+def run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold, tp):
 
-adv_cbudgets=adv_budgets.copy() #The current budgets of advertisers
-revenue=0 #The current revenue of the auctioneer
+    history=[]
+    adv_bids=dict()
+    #Generate a random sequence of num_query queries, with each query selected from the list queries
+    query_sequence=[]
+    for i in range(num_query):
+        #query_sequence.append("prova")
+        query_sequence.append(queries[randint(0,len(queries)-1)])
+                              
+    print(query_sequence)
 
-for i in range(num_query):
-    
-    current_query = query_sequence[i]
-    
-    adv_bids[current_query]=dict()
-    for adv in adv_values[current_query]:
-        adv_bids[current_query][adv] = adv_bots[adv](adv,adv_values[current_query][adv],slot_ctrs,history, current_query, tp)
+    adv_cbudgets=adv_budgets.copy() #The current budgets of advertisers
+    revenue=0 #The current revenue of the auctioneer
 
-    #For each query we use the balance algorithm for evaluating the assignment and the payments
-    #query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, query_sequence[i])
-    if tp ==  "gsp":
-        query_winners, query_pay = balance_gsp(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
-    elif tp == "fpa":
-        query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
-    #Update the history
-    history.append(dict())
-    history[i][current_query]=dict()
-    history[i][current_query]["adv_bids"]=dict(adv_bids)
-    history[i][current_query]["adv_slots"]=dict(query_winners)
-    history[i][current_query]["adv_pays"]=dict(query_pay)
-    
+    for i in range(num_query):
+        
+        current_query = query_sequence[i]
+        
+        adv_bids[current_query]=dict()
+        for adv in adv_values[current_query]:
+            adv_bids[current_query][adv] = adv_bots[adv](adv, adv_values[current_query][adv], threshold, adv_budgets[adv], adv_cbudgets[adv], slot_ctrs, history, current_query, tp)
 
-    for j in query_winners.keys():
-        #We now simulate an user clicking on the ad with a probability that is equivalent to the slot's clickthrough rate
-        #p = random() # A number chosen uniformly at random between 0 and 1
-        p = uniform(0, 1)
-        if p < slot_ctrs[query_sequence[i]][j]: #This event occurrs with probability that is exactly slot_ctrs[query_sequence[i]][j]
-            adv_cbudgets[query_winners[j]] -= query_pay[query_winners[j]]
-            revenue += query_pay[query_winners[j]]
-            
-    print(current_query, query_winners, query_pay, adv_cbudgets)
-    
-print(revenue)
+        #For each query we use the balance algorithm for evaluating the assignment and the payments
+        #query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, query_sequence[i])
+        if tp ==  "gsp":
+            query_winners, query_pay = balance_gsp(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
+        elif tp == "fpa":
+            query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
+        #Update the history
+        history.append(dict())
+        history[i][current_query]=dict()
+        history[i][current_query]["adv_bids"]=dict(adv_bids)
+        history[i][current_query]["adv_slots"]=dict(query_winners)
+        history[i][current_query]["adv_pays"]=dict(query_pay)
+        
+
+        for j in query_winners.keys():
+            #We now simulate an user clicking on the ad with a probability that is equivalent to the slot's clickthrough rate
+            #p = random() # A number chosen uniformly at random between 0 and 1
+            p = uniform(0, 1)
+            if p < slot_ctrs[query_sequence[i]][j]: #This event occurrs with probability that is exactly slot_ctrs[query_sequence[i]][j]
+                adv_cbudgets[query_winners[j]] -= query_pay[query_winners[j]]
+                revenue += query_pay[query_winners[j]]
+                
+        print(current_query, query_winners, query_pay, adv_cbudgets)
+        
+    print(revenue)
