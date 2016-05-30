@@ -3,9 +3,9 @@
 from random import randint, random, uniform
 from Balance import *
 from Bots import *
-'''
+
 #All possible queries
-queries=["prova","test","esempio"]
+queries=["prova"]
 tp = "gsp"
 #For each query, lists the available slots and their clickthrough rate
 slot_ctrs=dict()
@@ -46,13 +46,12 @@ adv_budgets["z"] = 35
 
 #Advertisers' bots
 adv_bots=dict()
-adv_bots["x"] = budget_saving
-adv_bots["y"] = budget_saving
-adv_bots["z"] = budget_saving
+adv_bots["x"] = best_response_altruistic
+adv_bots["y"] = best_response_altruistic
+adv_bots["z"] = best_response
 
 #It denotes the lenght of the sequence of queries that we will consider
 num_query=10
-'''
 
 def run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold, tp):
 
@@ -64,7 +63,7 @@ def run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots
         #query_sequence.append("prova")
         query_sequence.append(queries[randint(0,len(queries)-1)])
                               
-    print(query_sequence)
+    #print(query_sequence)
 
     adv_cbudgets=adv_budgets.copy() #The current budgets of advertisers
     revenue=0 #The current revenue of the auctioneer
@@ -99,6 +98,14 @@ def run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots
                 adv_cbudgets[query_winners[j]] -= query_pay[query_winners[j]]
                 revenue += query_pay[query_winners[j]]
                 
-        print(current_query, query_winners, query_pay, adv_cbudgets)
+        #print(current_query, query_winners, query_pay, adv_cbudgets)
         
-    print(revenue)
+    return revenue
+
+threshold = 0
+
+tot = 0
+for i in range(10000):
+    tot += run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold ,tp)
+
+print tot/10000

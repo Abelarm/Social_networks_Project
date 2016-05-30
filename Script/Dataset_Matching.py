@@ -37,7 +37,6 @@ def compute_weight(impacts, word_advs, doc):
     weight = 0
     for word in impacts:
         if doc in word_advs[word]:
-            #print(word_advs[word])
             weight += word_advs[word][doc]
     return weight
 

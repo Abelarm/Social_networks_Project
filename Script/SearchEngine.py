@@ -12,10 +12,10 @@ def order_by_PageRank(result, PageRank_graph):
     resultPR = OrderedDict(sorted(temp.items(), key=operator.itemgetter(1), reverse=True))
     return resultPR
 
-def order_by_HITS(result, HITS_graph):
+def order_by_HITS(result, HITS_graph, tp):
     temp = dict()
     for doc in result:
-        temp[doc] = HITS_graph[doc]
+        temp[doc] = HITS_graph[doc][tp]
     resultH = OrderedDict(sorted(temp.items(), key=operator.itemgetter(1), reverse=True))
     return resultH
 
@@ -27,9 +27,11 @@ print("---------------------------------------------")
 
 queries = []
 queries.append("UN resolution China ban weapons")
+'''
 queries.append("lego star wars")
 queries.append("Hotel in Bolivia pleasant view")
 queries.append("Obama")
+'''
 
 for query in queries:
     print("--------------------QUERY--------------------")
@@ -38,24 +40,25 @@ for query in queries:
     print("------------------BEST MATCH-----------------")
     result = best_match(query, 0, inverted_db)
     pprint.pprint(str(result))
+    '''
     print("--------BEST MATCH ORDERED BY PAGERANK-------")
     resultPG = order_by_PageRank(result, PageRank_graph)
     pprint.pprint(str(resultPG))
     '''
     print("----------BEST MATCH ORDERED BY HITS---------")
-    resultH = order_by_HITS(result, HITS_graph)
+    resultH = order_by_HITS(result, HITS_graph,"a")
     pprint.pprint(str(resultH))
-    '''
     
     print("-------------IMPROVED BEST MATCH-------------")
     result2 = improved_best_match(query, inverted_db)
     pprint.pprint(str(result2))
+    '''
     print("---IMPROVED BEST MATCH ORDERED BY PAGERANK---")
     result2PG = order_by_PageRank(result2, PageRank_graph)
     pprint.pprint(str(result2PG))
     '''
     print("-----IMPROVED BEST MATCH ORDERED BY HITS-----")
-    result2H = order_by_HITS(result2, HITS_graph)
+    result2H = order_by_HITS(result2, HITS_graph,"a")
     pprint.pprint(str(result2H))
-    '''
+
     print("---------------------------------------------")

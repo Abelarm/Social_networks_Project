@@ -4,11 +4,10 @@ from random import randint, uniform
 
 def best_response(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
 
-    
     step = len(history)
     
     if step == 0:
-        return 0
+        return uniform(0, 1)
     
     #Initialization
     for i in range(1, step+1):
@@ -17,16 +16,9 @@ def best_response(name, adv_value, threshold, budget, current_budget, slot_ctrs,
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return 0
-
-
-    #print ("adv_bids")
-    #print(adv_bids)
+            return uniform(0, 1)
 
     sort_bids=sorted(adv_bids[query].values(), reverse=True)
-
-    #print ("sort_bids")
-    #print(sort_bids)
 
     sort_slots=sorted(slot_ctrs[query].keys(), key=slot_ctrs[query].__getitem__, reverse=True)
     
@@ -89,7 +81,7 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
     step = len(history)
     
     if step == 0:
-        return 0
+        return uniform(0, 1)
 
     #Initialization
     for i in range(1, step+1):
@@ -98,7 +90,7 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return 0
+            return uniform(0, 1)
 
     sort_bids = sorted(adv_bids[query].values(), reverse=True)
 
@@ -138,6 +130,8 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
             preferred_slot = i
             payment = tmp_pay
 
+    #print("Preferred slot: " + str(preferred_slot+1))
+
     #3) Evaluate which bid to choose among the ones that allows the advertiser to being assigned the slot selected at the previous step
     #ultima slot
     if preferred_slot == -1:
@@ -147,17 +141,16 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
     #prima slot
     if preferred_slot == 0:
         # TIE-BREAKING RULE: I choose the bid that is exactly in the middle between my own value and the next bid
-        return max(adv_value, payment)
-
+        return max(payment, adv_value)
     #TIE-BREAKING RULE: If I like slot j, I choose the bid b_i for which I am indifferent from taking j at computed price or taking j-1 at price b_i
-    return max(payment+1, sort_bids[preferred_slot]-1)
+    return sort_bids[preferred_slot-1] - 0.01
 
 def best_response_altruistic(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
     
     step = len(history)
 
     if step == 0:
-        return randint(0, adv_value)
+        return randint(0, 1)
 
     #Initialization
     for i in range(1,step+1):
@@ -166,7 +159,7 @@ def best_response_altruistic(name, adv_value, threshold, budget, current_budget,
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return randint(0, adv_value)
+            return randint(0, 1)
 
     sort_bids = sorted(adv_bids[query].values(), reverse=True)
 
@@ -206,6 +199,8 @@ def best_response_altruistic(name, adv_value, threshold, budget, current_budget,
             preferred_slot = i
             payment = tmp_pay
 
+    #print("Preferred slot: " + str(preferred_slot+1))
+
     #3) Evaluate which bid to choose among the ones that allows the advertiser to being assigned the slot selected at the previous step
     #ultima slot
     if preferred_slot == -1:
@@ -218,9 +213,7 @@ def best_response_altruistic(name, adv_value, threshold, budget, current_budget,
         return min(adv_value, payment)
 
     #TIE-BREAKING RULE: If I like slot j, I choose the bid b_i for which I am indifferent from taking j at computed price or taking j-1 at price b_i
-    if sort_bids[preferred_slot]-1 < 0:
-        return 0
-    return min(payment+1, sort_bids[preferred_slot]-1)
+    return sort_bids[preferred_slot] + 0.01
 
 
 def competitor(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
@@ -240,7 +233,7 @@ def competitor(name, adv_value, threshold, budget, current_budget, slot_ctrs, hi
 
     sort_bids = sorted(adv_bids[query].values(), reverse=True)
     
-    return sort_bids[0] + uniform(0, 1)
+    return sort_bids[0] + 0.01
 
 
 def budget_saving(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
