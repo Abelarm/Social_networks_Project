@@ -84,3 +84,15 @@ def dump_full_graph():
 					stri = json.dumps(full_graph, ensure_ascii=False)
 					fp.write(stri)
 	print("------DONE-----")
+    
+def get_PageRank_graph():
+	with open('PageRank.json') as file:
+			stri = file.read()
+			PageRank_graph = json.loads(stri, encoding='utf-8')
+	return PageRank_graph
+    
+def get_HITS_graph():
+	with open('HITS.json') as file:
+			stri = file.read()
+			HITS_graph = json.loads(stri, encoding='utf-8')
+	return HITS_graph

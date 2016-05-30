@@ -7,10 +7,13 @@ def best_match(query, threshold, word_advs):
     adv_weights = dict()
     best_docs = OrderedDict()
     
+    query = query.lower()
     query_words = query.split()
     
     #For every word we look at each document in the list and we increment the document's weight (based on frequency)
     for word in query_words:
+        if word not in word_advs:
+            continue
         for doc in word_advs[word]:
             if doc not in adv_weights.keys():
                 adv_weights[doc] = word_advs[word][doc]
@@ -40,10 +43,10 @@ def compute_weight(impacts, word_advs, doc):
 
 def remove_and_add(docs, last_sorted_docs_key, k, weight):
 
-    print("Removed k:" + str(last_sorted_docs_key) +" v: " + str(docs[last_sorted_docs_key]))
+    #print("Removed k:" + str(last_sorted_docs_key) +" v: " + str(docs[last_sorted_docs_key]))
     del docs[last_sorted_docs_key]
 
-    print("Added k:" + str(k) +" v: " + str(weight))
+    #print("Added k:" + str(k) +" v: " + str(weight))
     docs[k] = weight
 
     return OrderedDict(sorted(docs.items(), key = operator.itemgetter(1), reverse=True))
@@ -70,7 +73,7 @@ def update_docs(to_consider, word_advs, impacts, impact_keys, docs):
             real_weight = compute_weight(impacts, word_advs, not_cos_key)
 
             if real_weight > sorted_docs[last_sorted_docs_key]:
-                print("Updating with: " + to_consider + "--------------")
+                #print("Updating with: " + to_consider + "--------------")
                 sorted_docs = remove_and_add(sorted_docs, last_sorted_docs_key, not_cos_key, real_weight)
                 sorted_docs_key = list(sorted_docs.keys())
         else:
@@ -81,18 +84,20 @@ def update_docs(to_consider, word_advs, impacts, impact_keys, docs):
     
 ###BEST MATCH###         
 def improved_best_match(query, word_advs):
-    best_docs = OrderedDict()
     
+    query = query.lower()
     query_words = query.split()
     
     #computing impact of query_words as the maximum frequency for that word
     temp = dict()
     for word in query_words:
+        if word not in word_advs:
+            continue
         #impact is first frequency of word, since in decreasing order
         temp[word] = list(word_advs[word].values())[0]
     #sorting impacts in decreasing order
     impacts = OrderedDict(sorted(temp.items(), key=operator.itemgetter(1), reverse=True))
-    print(impacts)
+    #print(impacts)
 
     impact_keys = list(impacts.keys())
     
