@@ -47,8 +47,10 @@ adv_budgets["z"] = 35
 #Advertisers' bots
 adv_bots=dict()
 adv_bots["x"] = best_response_altruistic
-adv_bots["y"] = best_response_altruistic
-adv_bots["z"] = best_response
+adv_bots["y"] = best_response_competitive
+adv_bots["z"] = best_response_competitive
+
+test_name = "x"
 
 #It denotes the lenght of the sequence of queries that we will consider
 num_query=10
@@ -68,18 +70,52 @@ def run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots
     adv_cbudgets=adv_budgets.copy() #The current budgets of advertisers
     revenue=0 #The current revenue of the auctioneer
 
+    test_name_val = 0
+
     for i in range(num_query):
         
         current_query = query_sequence[i]
         
         adv_bids[current_query]=dict()
         for adv in adv_values[current_query]:
-            adv_bids[current_query][adv] = adv_bots[adv](adv, adv_values[current_query][adv], threshold, adv_budgets[adv], adv_cbudgets[adv], slot_ctrs, history, current_query, tp)
+            if adv != test_name:
+                returns = adv_bots[adv](adv, adv_values[current_query][adv], threshold, adv_budgets[adv], adv_cbudgets[adv], slot_ctrs, history, current_query, tp)
+                adv_bids[current_query][adv] = returns[1]
+
+        returns = adv_bots[test_name](test_name, adv_values[current_query][test_name], threshold, adv_budgets[test_name], adv_cbudgets[test_name], slot_ctrs, history, current_query, tp)
+        adv_bids[current_query][test_name] = returns[1]
 
         #For each query we use the balance algorithm for evaluating the assignment and the payments
         #query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, query_sequence[i])
         if tp ==  "gsp":
             query_winners, query_pay = balance_gsp(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
+            #print(query_winners)
+            if returns[0]["slot"] == "none":
+                None
+                #print("He wants nothing")
+            elif returns[0]["slot"] != "none":
+                #print(returns[0]["slot"])
+                pref_id = returns[0]["slot"]
+                obt_id = "id1000"
+                for n in query_winners:
+                    if query_winners[n] == test_name:
+                        obt_id = n
+
+                #print(pref_id, obt_id)
+                pref_id_num = int(pref_id.replace("id", ""))
+                obt_id_num = int(obt_id.replace("id", ""))
+                #print(pref_id_num, obt_id_num)
+                if pref_id_num > obt_id_num:
+                   #print("he got better")
+                   test_name_val += 2
+                elif pref_id_num < obt_id_num:
+                   #print("he got worst")
+                   test_name_val -= 1
+                else:
+                   #print("go what he wants")
+                   test_name_val += 1
+
+
         elif tp == "fpa":
             query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
         #Update the history
@@ -100,12 +136,14 @@ def run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots
                 
         #print(current_query, query_winners, query_pay, adv_cbudgets)
         
-    return revenue
+    return test_name_val/num_query, revenue
 
 threshold = 0
 
 tot = 0
 for i in range(10000):
-    tot += run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold ,tp)
+    val = run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold ,tp)[0]
+    #print(val)
+    tot += val
 
-print tot/10000
+print ("Totale:\t\t" + str(tot/10000))

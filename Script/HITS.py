@@ -53,6 +53,8 @@ def HITS2(graph,step,confidence=1.0e-6):
   h = dict()
   lastA = dict()
   lastH = dict()
+  olddiffa = 0
+  olddiffh = 0
   for i in nodes:
     a[i] = 0.0
     lastA[i] = 0.0
@@ -110,10 +112,18 @@ def HITS2(graph,step,confidence=1.0e-6):
     diffh = np.abs(nph - nplastH).sum()
     lastA = a.copy()
     lastH = h.copy()
-    
+
+    #print(float(olddiffa)-diffa)
+
     if diffa <= confidence or diffh < confidence:
-      done = 1
+        done = 1
+
+    if np.abs(olddiffa-diffa) <= confidence or np.abs(olddiffh-diffh) <= confidence:
+        done = 1
+
+    olddiffa = diffa
+    olddiffh = diffh
 
     print("Iteration: " + str(time) +"/" +str(step) + " diffa: " + str(diffa) + " diffh " + str(diffh))
     
-  return time, a , h
+  return time, a, h

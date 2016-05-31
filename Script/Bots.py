@@ -4,10 +4,12 @@ from random import randint, uniform
 
 def best_response(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
 
+    toret = {"name": name, "slot": "none"}
+
     step = len(history)
     
     if step == 0:
-        return uniform(0, 1)
+        return toret, uniform(0, 1)
     
     #Initialization
     for i in range(1, step+1):
@@ -16,7 +18,7 @@ def best_response(name, adv_value, threshold, budget, current_budget, slot_ctrs,
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return uniform(0, 1)
+            return toret, uniform(0, 1)
 
     sort_bids=sorted(adv_bids[query].values(), reverse=True)
 
@@ -65,23 +67,26 @@ def best_response(name, adv_value, threshold, budget, current_budget, slot_ctrs,
     #ultima slot
     if preferred_slot == -1:
         # TIE-BREAKING RULE: I choose the largest bid smaller than my value for which I lose
-        return min(adv_value, sort_bids[len(sort_slots)])
-    
+        return toret, min(adv_value, sort_bids[len(sort_slots)])
+
+    toret["slot"] = sort_slots[preferred_slot]
     #prima slot
     if preferred_slot == 0:
         # TIE-BREAKING RULE: I choose the bid that is exactly in the middle between my own value and the next bid
-        return float(adv_value+payment)/2
+        return toret, float(adv_value+payment)/2
     
     #TIE-BREAKING RULE: If I like slot j, I choose the bid b_i for which I am indifferent from taking j at computed price or taking j-1 at price b_i
-    return (adv_value - float(slot_ctrs[query][sort_slots[preferred_slot]])/slot_ctrs[query][sort_slots[preferred_slot-1]] * (adv_value - payment))
+    return toret, (adv_value - float(slot_ctrs[query][sort_slots[preferred_slot]])/slot_ctrs[query][sort_slots[preferred_slot-1]] * (adv_value - payment))
 
 
 def best_response_competitive(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
-    
+
+    toret = {"name": name, "slot": "none"}
+
     step = len(history)
     
     if step == 0:
-        return uniform(0, 1)
+        return toret, uniform(0, 1)
 
     #Initialization
     for i in range(1, step+1):
@@ -90,7 +95,7 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return uniform(0, 1)
+            return toret, uniform(0, 1)
 
     sort_bids = sorted(adv_bids[query].values(), reverse=True)
 
@@ -136,21 +141,25 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
     #ultima slot
     if preferred_slot == -1:
         # TIE-BREAKING RULE: I choose the largest bid smaller than my value for which I lose
-        return max(adv_value, sort_bids[len(sort_slots)])
+        return toret, max(adv_value, sort_bids[len(sort_slots)])
+
+    toret["slot"] = sort_slots[preferred_slot]
 
     #prima slot
     if preferred_slot == 0:
         # TIE-BREAKING RULE: I choose the bid that is exactly in the middle between my own value and the next bid
-        return max(payment, adv_value)
+        return toret, max(payment, adv_value)
     #TIE-BREAKING RULE: If I like slot j, I choose the bid b_i for which I am indifferent from taking j at computed price or taking j-1 at price b_i
-    return sort_bids[preferred_slot-1] - 0.01
+    return toret, sort_bids[preferred_slot-1] - 0.01
 
 def best_response_altruistic(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
     
     step = len(history)
 
+    toret  = {"name": name, "slot": "none"}
+
     if step == 0:
-        return randint(0, 1)
+        return toret, randint(0, 1)
 
     #Initialization
     for i in range(1,step+1):
@@ -159,14 +168,14 @@ def best_response_altruistic(name, adv_value, threshold, budget, current_budget,
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return randint(0, 1)
+            return toret, randint(0, 1)
 
     sort_bids = sorted(adv_bids[query].values(), reverse=True)
 
     sort_slots = sorted(slot_ctrs[query].keys(), key=slot_ctrs[query].__getitem__, reverse=True)
 
     if name not in adv_slots.values():
-        last_slot =- 1
+        last_slot = -1
     else:
         last_slot = list(adv_slots.values()).index(name)
 
@@ -205,23 +214,27 @@ def best_response_altruistic(name, adv_value, threshold, budget, current_budget,
     #ultima slot
     if preferred_slot == -1:
         # TIE-BREAKING RULE: I choose the largest bid smaller than my value for which I lose
-        return min(adv_value, sort_bids[len(sort_slots)])
+        return toret, min(adv_value, sort_bids[len(sort_slots)])
+
+    toret["slot"] = sort_slots[preferred_slot]
 
     #prima slot
     if preferred_slot == 0:
         # TIE-BREAKING RULE: I choose the bid that is exactly in the middle between my own value and the next bid
-        return min(adv_value, payment)
+        return toret, min(adv_value, payment)
 
     #TIE-BREAKING RULE: If I like slot j, I choose the bid b_i for which I am indifferent from taking j at computed price or taking j-1 at price b_i
-    return sort_bids[preferred_slot] + 0.01
+    return toret, sort_bids[preferred_slot] + 0.01
 
 
 def competitor(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
-    
+
+    toret = {"name": name, "slot": "none"}
+
     step = len(history)
     
     if step == 0:
-        return adv_value
+        return toret, adv_value
     
 
     for i in range(1,step+1):
@@ -229,19 +242,24 @@ def competitor(name, adv_value, threshold, budget, current_budget, slot_ctrs, hi
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return 0
+            return toret, 0
 
     sort_bids = sorted(adv_bids[query].values(), reverse=True)
-    
-    return sort_bids[0] + 0.01
+    sort_slots = sorted(slot_ctrs[query].keys(), key=slot_ctrs[query].__getitem__, reverse=True)
+
+    toret["slot"] = sort_slots[0]
+
+    return toret, sort_bids[0] + 0.01
 
 
 def budget_saving(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
-    
+
+    toret = {"name": name, "slot": "none"}
+
     step = len(history)
     
     if step == 0:
-        return randint(0, adv_value)
+        return toret, randint(0, adv_value)
     
     for i in range(1, step+1):
         if query in history[step-i]:
@@ -249,19 +267,24 @@ def budget_saving(name, adv_value, threshold, budget, current_budget, slot_ctrs,
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return randint(0, adv_value)
+            return toret, randint(0, adv_value)
     
     min_value = sys.float_info.max
     min_name = None
     for bid in adv_bids[query]:
-        if not bid in list(adv_slots.values()) and adv_bids[query][bid] < min_value:
+        if bid not in list(adv_slots.values()) and adv_bids[query][bid] < min_value:
             min_value = adv_bids[query][bid]
             min_name = bid
 
-    return min(min_value, adv_value)
+    sort_slots = sorted(slot_ctrs[query].keys(), key=slot_ctrs[query].__getitem__, reverse=True)
+    toret["slot"] = sort_slots[len(sort_slots)-1]
+
+    return toret, min(min_value, adv_value)
 
 
 def random(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
+
+    toret = {"name": name, "slot": "none"}
 
     all_bids = []
     for i in range(len(history)):
@@ -270,11 +293,11 @@ def random(name, adv_value, threshold, budget, current_budget, slot_ctrs, histor
                 all_bids += list(b.values())
 
     if len(all_bids) == 0:
-        return randint(0, adv_value)
+        return toret, randint(0, adv_value)
 
     maxbidEVER= max(all_bids)
 
-    return uniform(0, maxbidEVER+1)
+    return toret, uniform(0, maxbidEVER+1)
 
 
 def competitor_budget(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
