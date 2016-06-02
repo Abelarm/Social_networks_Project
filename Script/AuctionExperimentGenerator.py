@@ -1,63 +1,86 @@
-import Bots
+from Bots import *
 import load_dataset 
-from random import *
+import random as rm
 from Test_Bots import run_auction
-
-bots_name = []
-to_not_call = ["uniform","randint","sys"]
-
-for method in dir(Bots):
-	if not "__" in method and not method in to_not_call:
-		bots_name.append(method)
 
 queries = ["national", "granmother", "hotel", "painting", "salamander", "buidling", "obama", "university", "console", "art"]
 advertiser = ["x", "y", "z", "w", "k", "q"]
 
-threshold = 10
+num_query = 20
 adv_bots = dict()
 
-for it in range(500):
+adv_bots=dict()
+adv_bots["x"] = best_preferential_competitor
+adv_bots["y"] = best_preferential_competitor
+adv_bots["z"] = best_preferential_competitor
+adv_bots["w"] = best_preferential_competitor
+adv_bots["k"] = best_preferential_competitor
+adv_bots["q"] = best_preferential_competitor
 
+tot_rev_gsp = 0
+tot_val_gsp = 0
+
+tot_rev_fpa = 0
+tot_val_fpa = 0
+
+rep = 500
+for it in range(rep):
+
+	threshold =  rm.randint(5,15)
 
 	slot_ctrs = dict()
 
 	for q in queries:
 		slot_ctrs[q] = dict()
-		num_slot = randint(2,4)
+		num_slot = rm.randint(2,4)
 		for i in range(num_slot):
-			slot_ctrs[q]["id"+str(i+1)] = uniform(0,1) 
+			slot_ctrs[q]["id"+str(i+1)] = rm.uniform(0,1) 
 
 	adv_values = dict()
 
 	for q in queries:
 		adv_values[q] = dict()
 		for a in advertiser:
-			adv_values[q][a] = randint(0,20)
+			adv_values[q][a] = rm.randint(0,20)
 
 	adv_budgets = dict()
 
 	for a in advertiser:
-		adv_budgets[a] = randint(10,50)
+		adv_budgets[a] = rm.randint(10,50)
 
-	adv_bots = dict()
-
+	'''
 	print ("calling GSP #" + str(it) + " on configuration:\n")
-	print (slot_ctrs)
-	print (adv_values) 
-	print(adv_budgets) 
+	print("------Slot Clickthrough------")
+	print ("\t\t" + str(slot_ctrs))
+	print("------Adv Values------")
+	print ("\t\t"+str(adv_values)) 
+	print("------Slot Clickthrough------")
+	print("\t\t"+ str(adv_budgets)) 
+	'''
 
-	for io in bots_name:
-		adv_bots["x"] = getattr(Bots, io)
+	#print("--------STARTING AUCTION--------")
+	tmp = run_auction("x", num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold ,"gsp")
+	val = tmp[0]
+	rev = tmp[1]
+	#print(val)
+	tot_val_gsp += val
+	tot_rev_gsp += rev
 
-		for name in bots_name:
-			for other in advertiser:
-				if other != "x":
-					adv_bots[other] = getattr(Bots, name)
+	tmp = run_auction("x", num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold ,"fpa")
+	val = tmp[0]
+	rev = tmp[1]
+	#print(val)
+	tot_val_fpa += val
+	tot_rev_fpa += rev
 
-			print(adv_bots)
-			run_auction(20, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold, "fpa")
+	#raw_input()
 
-			raw_input()
+
+print ("Totale Val GSP:\t\t" + str(float(tot_val_gsp)/rep))
+print ("Totale Rev GSP:\t\t" + str(float(tot_rev_gsp)/rep))
+print ("\n\n")
+print ("Totale Val FPA:\t\t" + str(float(tot_val_fpa)/rep))
+print ("Totale Rev FPA:\t\t" + str(float(tot_rev_fpa)/rep))
 
 
 

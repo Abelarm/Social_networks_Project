@@ -6,7 +6,7 @@ from Bots import *
 
 #All possible queries
 queries=["prova"]
-tp = "gsp"
+tp = "fpa"
 #For each query, lists the available slots and their clickthrough rate
 slot_ctrs=dict()
 slot_ctrs["prova"]=dict()
@@ -24,38 +24,38 @@ slot_ctrs["esempio"]["id2"] = 0.30
 #For each query, lists the advertisers that have a interest in that query
 adv_values=dict()
 adv_values["prova"]=dict()
-adv_values["prova"]["x"] = 5
-adv_values["prova"]["y"] = 10
+adv_values["prova"]["x"] = 7
+adv_values["prova"]["y"] = 7
 adv_values["prova"]["z"] = 7
 
 adv_values["test"]=dict()
-adv_values["test"]["x"] = 4
-adv_values["test"]["y"] = 2
-adv_values["test"]["z"] = 7
+adv_values["test"]["x"] = 5
+adv_values["test"]["y"] = 5
+adv_values["test"]["z"] = 5
 
 adv_values["esempio"]=dict()
-adv_values["esempio"]["x"] = 6
-adv_values["esempio"]["z"] = 5
-adv_values["esempio"]["z"] = 7
+adv_values["esempio"]["x"] = 9
+adv_values["esempio"]["z"] = 9
+adv_values["esempio"]["z"] = 9
 
 #The initial budget of each advertisers
 adv_budgets=dict()
 adv_budgets["x"] = 25
-adv_budgets["y"] = 15
-adv_budgets["z"] = 35
+adv_budgets["y"] = 25
+adv_budgets["z"] = 25
 
 #Advertisers' bots
 adv_bots=dict()
-adv_bots["x"] = best_response_altruistic
-adv_bots["y"] = best_response_competitive
-adv_bots["z"] = best_response_competitive
+adv_bots["x"] = random
+adv_bots["y"] = best_preferential_competitor
+adv_bots["z"] = best_preferential_competitor
 
 test_name = "x"
 
 #It denotes the lenght of the sequence of queries that we will consider
 num_query=10
 
-def run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold, tp):
+def run_auction(test_name, num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold, tp):
 
     history=[]
     adv_bids=dict()
@@ -89,35 +89,47 @@ def run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots
         #query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, query_sequence[i])
         if tp ==  "gsp":
             query_winners, query_pay = balance_gsp(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
-            #print(query_winners)
-            if returns[0]["slot"] == "none":
-                None
-                #print("He wants nothing")
-            elif returns[0]["slot"] != "none":
-                #print(returns[0]["slot"])
-                pref_id = returns[0]["slot"]
-                obt_id = "id1000"
-                for n in query_winners:
-                    if query_winners[n] == test_name:
-                        obt_id = n
-
-                #print(pref_id, obt_id)
-                pref_id_num = int(pref_id.replace("id", ""))
-                obt_id_num = int(obt_id.replace("id", ""))
-                #print(pref_id_num, obt_id_num)
-                if pref_id_num > obt_id_num:
-                   #print("he got better")
-                   test_name_val += 2
-                elif pref_id_num < obt_id_num:
-                   #print("he got worst")
-                   test_name_val -= 1
-                else:
-                   #print("go what he wants")
-                   test_name_val += 1
-
-
         elif tp == "fpa":
             query_winners, query_pay = balance_fpa(slot_ctrs, adv_bids, adv_budgets, adv_cbudgets, current_query)
+
+
+        #print(query_winners)
+
+        #print(returns[0]["slot"])
+        pref_id = returns[0]["slot"]
+        obt_id = "id1000"
+        for n in query_winners:
+            if query_winners[n] == test_name:
+                obt_id = n
+        if pref_id == "none":
+            pref_id = "id1000"
+
+        pref_id_num = int(pref_id.replace("id", ""))
+        obt_id_num = int(obt_id.replace("id", ""))
+        #print(pref_id_num, obt_id_num)
+        if pref_id_num > obt_id_num:
+           #print("he got better")
+           test_name_val += 2
+        elif pref_id_num < obt_id_num:
+           #print("he got worst")
+           test_name_val -= 1
+        else:
+           #print("go what he wants")
+           test_name_val += 1
+
+            #print test_name_val
+        
+        '''
+        print("------Current Query------")
+        print ("\t\t" + str(current_query))
+        print("------Query Winners------")
+        print ("\t\t" + str(query_winners))
+        print("------Query Pay------")
+        print ("\t\t" + str(query_pay))
+        print("------Current Budget------")
+        print ("\t\t" + str(adv_cbudgets))
+        '''
+
         #Update the history
         history.append(dict())
         history[i][current_query]=dict()
@@ -136,14 +148,25 @@ def run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots
                 
         #print(current_query, query_winners, query_pay, adv_cbudgets)
         
-    return test_name_val/num_query, revenue
+    return float(test_name_val)/num_query, revenue
 
+'''
 threshold = 0
 
-tot = 0
-for i in range(10000):
-    val = run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold ,tp)[0]
+tot_val = 0
+tot_rev = 0
+rep = 10000
+for i in range(rep):
+    tmp = run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold ,tp)
+    val = tmp[0]
+    rev = tmp[1]
     #print(val)
-    tot += val
+    tot_val += val
+    tot_rev += rev
 
-print ("Totale:\t\t" + str(tot/10000))
+print ("Totale Val:\t\t" + str(float(tot_val)/rep))
+print ("Totale Rev:\t\t" + str(float(tot_rev)/rep))
+'''
+
+
+
