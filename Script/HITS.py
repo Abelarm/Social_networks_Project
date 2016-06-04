@@ -74,7 +74,8 @@ def HITS2(graph,step,confidence=1.0e-6):
       incoming = graph[n]["incoming"]
       a[n] = 0
       for i in incoming:
-          a[n] += h[i]
+          if i in h:
+            a[n] += h[i]
       if a[n] > maxA:
         maxA = a[n]  
  
@@ -90,7 +91,8 @@ def HITS2(graph,step,confidence=1.0e-6):
       if type(outgoing) == float:
         outgoing=[]
       for o in outgoing:
-        h[n] += a[o]
+        if o in a:
+          h[n] += a[o]
       if h[n] > maxH:
         maxH = h[n]
 

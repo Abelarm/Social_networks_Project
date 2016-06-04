@@ -1,7 +1,7 @@
 from HITS import *
 import json
 import timeit
-from load_dataset import get_fullgraph
+from load_dataset import *
 
 rep = 10
 elapsed_load = 0
