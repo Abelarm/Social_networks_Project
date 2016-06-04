@@ -1,26 +1,27 @@
 import json
 from collections import OrderedDict
+import operator
 
 def load():
-		#print ("START LOADING")
-		with open('dataset.json') as file:
-				stri = file.read()
-				data = json.loads(stri,object_pairs_hook=OrderedDict, encoding='utf-8')
-		return data
+	print ("START LOADING")
+	with open('dataset.json') as file:
+		stri = file.read()
+		data = json.loads(stri, object_pairs_hook = OrderedDict, encoding='utf-8')
+	return data
 
 def get_graph():
-		all_graph = dict()
-		data = load()
-		#print("LOAD FILE COMPLETE")
-		for name in data.keys():
-				graph = data[name]["graph"]
-				all_graph.update(graph)
-		return all_graph
+	all_graph = dict()
+	data = load()
+	print("LOAD FILE COMPLETE")
+	for name in data.keys():
+		graph = data[name]["graph"]
+		all_graph.update(graph)
+	return all_graph
 
 def get_fullgraph():
 	with open('full_graph.json') as file:
-			stri = file.read()
-			fullgraph = json.loads(stri, encoding='utf-8')
+		stri = file.read()
+		fullgraph = json.loads(stri, encoding='utf-8')
 	return fullgraph
 
 def get_inverted():
@@ -34,10 +35,37 @@ def get_db():
 	all_db = dict()
 	data = load()
 	for name in data:
-		 db = data[name]["db"]
-		 all_db.update(db)
+		if name == "inv_db":
+			continue
+		db = data[name]["db"]
+		all_db.update(db)
 
 	return all_db
+
+def get_db_ordered():
+	print("STARTING ORDERING")
+	db = get_db()
+	new_db = dict()
+	
+	for k in db:
+		len_k = len(db[k])
+		if len_k == 0:
+			continue
+		temp_db = dict()
+
+		for w in db[k]:
+			if w not in temp_db:
+				temp_db[w]=dict()
+
+			count = db[k].count(w)
+			temp_db[w] = float(count)/len_k
+
+		sorted_word = OrderedDict(sorted(temp_db.items(), key=operator.itemgetter(1), reverse=True))
+		new_db[k] = list(sorted_word.keys())
+
+	print("FINISHED ORDERING")
+	return new_db
+
 
 def count_word():
 	data = load()
@@ -84,13 +112,13 @@ def dump_full_graph():
 					stri = json.dumps(full_graph, ensure_ascii=False)
 					fp.write(stri)
 	print("------DONE-----")
-    
+
 def get_PageRank_graph():
 	with open('PageRank.json') as file:
 			stri = file.read()
 			PageRank_graph = json.loads(stri, encoding='utf-8')
 	return PageRank_graph
-    
+
 def get_HITS_graph():
 	with open('HITS.json') as file:
 			stri = file.read()
