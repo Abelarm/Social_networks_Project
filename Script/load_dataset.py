@@ -2,7 +2,7 @@ import json
 from collections import OrderedDict
 
 def load():
-		print ("START LOADING")
+		#print ("START LOADING")
 		with open('dataset.json') as file:
 				stri = file.read()
 				data = json.loads(stri,object_pairs_hook=OrderedDict, encoding='utf-8')
@@ -11,7 +11,7 @@ def load():
 def get_graph():
 		all_graph = dict()
 		data = load()
-		print("LOAD FILE COMPLETE")
+		#print("LOAD FILE COMPLETE")
 		for name in data.keys():
 				graph = data[name]["graph"]
 				all_graph.update(graph)

@@ -58,6 +58,8 @@ def pageRank2(graph,s,step,confidence):
       tmp[i] = float(1-s)/n #Each nodes receives a share of 1/n with probability 1-s
     
     for i in nodes:
+      if type(graph[i] == float):
+        continue
       for j in graph[i]:
         tmp[j] += float(s*rank[i])/len(graph[i]) #Each nodes receives a fraction of its neighbor rank with probability s 
     
