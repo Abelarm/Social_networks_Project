@@ -28,6 +28,6 @@ for i in range(rep):
 	#print("---------FINISHED DUMPING---------")
 	elapsed_dump += timeit.default_timer() - start_time_dump
 
-print("Load:\t"+str(elapsed_load))
-print("Algorithn:\t"+str(elapsed))
-print("Dump:\t"+str(elapsed_dump))
+print("Load:\t"+str(float(elapsed_load)/rep))
+print("Algorithn:\t"+str(float(elapsed)/rep))
+print("Dump:\t"+str(float(elapsed_dump)/rep))
