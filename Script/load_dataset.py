@@ -28,7 +28,7 @@ def get_graph_partial(num):
 		graph_key = list(graph.keys())[:sub_part]
 		for k in graph_key:
 			all_graph[k] = graph[k]
-	#print len(all_graph)
+	print (len(all_graph))
 	return all_graph	
 
 def get_fullgraph():
@@ -155,3 +155,5 @@ def get_HITS_graph():
 			stri = file.read()
 			HITS_graph = json.loads(stri, encoding='utf-8')
 	return HITS_graph
+
+dump_full_graph_num(5000)
