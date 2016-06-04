@@ -22,7 +22,7 @@ def get_graph_partial(num):
 	all_graph = dict()
 	data = load()
 	print("LOAD FILE COMPLETE")
-	sub_part = 1 + num/15
+	sub_part = 1 + int(num/15)
 	for name in data.keys():
 		graph = data[name]["graph"]
 		graph_key = list(graph.keys())[:sub_part]
@@ -115,6 +115,18 @@ def calcola_fullgraph(graph):
 	return full_graph
 
 
+def dump_full_graph(num):
+
+	graph_mid = get_graph_partial(num)
+	print("------CALCULATING FULLGRAPH------")
+	full_graph = calcola_fullgraph(graph_mid)
+	print("------FINISHED FULLGRAPH-----")
+	print("------START DUMPING-----")
+	with open('full_graph'+str(num)+'.json', 'w') as fp:
+					stri = json.dumps(full_graph, ensure_ascii=False)
+					fp.write(stri)
+	print("------DONE-----")
+
 def dump_full_graph():
 	graph_mid = graph()
 	print("------CALCULATING FULLGRAPH------")
@@ -138,4 +150,4 @@ def get_HITS_graph():
 			HITS_graph = json.loads(stri, encoding='utf-8')
 	return HITS_graph
 
-get_graph_partial(1000)
+dump_full_graph(1000)
