@@ -37,6 +37,12 @@ def get_fullgraph():
 		fullgraph = json.loads(stri, encoding='utf-8')
 	return fullgraph
 
+def get_fullgraph_num(num):
+	with open('full_graph'+str(num)+'.json') as file:
+		stri = file.read()
+		fullgraph = json.loads(stri, encoding='utf-8')
+	return fullgraph
+
 def get_inverted():
 
 	data = load()
@@ -115,7 +121,7 @@ def calcola_fullgraph(graph):
 	return full_graph
 
 
-def dump_full_graph(num):
+def dump_full_graph_num(num):
 
 	graph_mid = get_graph_partial(num)
 	print("------CALCULATING FULLGRAPH------")
@@ -149,5 +155,3 @@ def get_HITS_graph():
 			stri = file.read()
 			HITS_graph = json.loads(stri, encoding='utf-8')
 	return HITS_graph
-
-#dump_full_graph(1000)
