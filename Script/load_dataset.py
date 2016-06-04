@@ -18,6 +18,19 @@ def get_graph():
 		all_graph.update(graph)
 	return all_graph
 
+def get_graph_partial(num):
+	all_graph = dict()
+	data = load()
+	print("LOAD FILE COMPLETE")
+	sub_part = 1 + num/15
+	for name in data.keys():
+		graph = data[name]["graph"]
+		graph_key = list(graph.keys())[:sub_part]
+		for k in graph_key:
+			all_graph[k] = graph[k]
+	#print len(all_graph)
+	return all_graph	
+
 def get_fullgraph():
 	with open('full_graph.json') as file:
 		stri = file.read()
@@ -124,3 +137,5 @@ def get_HITS_graph():
 			stri = file.read()
 			HITS_graph = json.loads(stri, encoding='utf-8')
 	return HITS_graph
+
+get_graph_partial(1000)

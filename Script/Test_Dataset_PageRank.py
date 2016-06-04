@@ -2,7 +2,7 @@
 import json
 
 from PageRank import pageRank2
-from load_dataset import get_graph
+from load_dataset import get_graph_partial
 import timeit
 
 rep = 10
@@ -12,7 +12,7 @@ elapsed = 0
 for i in range(rep):
 
 	start_time_load = timeit.default_timer()
-	graph = get_graph()
+	graph = get_graph_partial(5000)
 	elapsed_load += timeit.default_timer() - start_time_load 
 
 	start_time = timeit.default_timer()
