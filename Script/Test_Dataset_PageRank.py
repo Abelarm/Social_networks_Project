@@ -12,7 +12,7 @@ elapsed = 0
 for i in range(rep):
 
 	start_time_load = timeit.default_timer()
-	graph = get_graph_partial(5000)
+	graph = get_graph_partial(20000)
 	elapsed_load += timeit.default_timer() - start_time_load 
 
 	start_time = timeit.default_timer()

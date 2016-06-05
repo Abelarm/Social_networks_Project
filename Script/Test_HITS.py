@@ -9,7 +9,7 @@ elapsed_dump = 0
 elapsed = 0
 for i in range(rep):
 	start_time_load = timeit.default_timer()
-	graph = get_fullgraph()
+	graph = get_fullgraph_num(20000)
 	elapsed_load += timeit.default_timer() - start_time_load 
 
 	#print("STARTING HITS")
