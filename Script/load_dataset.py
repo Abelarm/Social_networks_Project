@@ -156,4 +156,4 @@ def get_HITS_graph():
 			HITS_graph = json.loads(stri, encoding='utf-8')
 	return HITS_graph
 
-dump_full_graph_num(5000)
+#dump_full_graph_num(5000)

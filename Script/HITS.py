@@ -136,7 +136,6 @@ def calculate_a(list_key, graph, h):
 
   a = dict()
   
-  print("entrato nel metodo a")
   maxA = -1
   for n in list_key:
     incoming = graph[n]["incoming"]
@@ -149,13 +148,11 @@ def calculate_a(list_key, graph, h):
     if a[n] > maxA:
       maxA = a[n] 
 
-  print("esco da metodo a")
   return maxA, a
 
 def calculate_h(list_key, graph, a):
 
   h = dict()
-  print("entrato nel metodo h")
   maxH = -1 
   for n in list_key:
     outgoing = graph[n]["outgoing"]
@@ -168,7 +165,6 @@ def calculate_h(list_key, graph, a):
     if h[n] > maxH:
       maxH = h[n]
 
-  print("esco dal metodo h")
   return maxH, h
 
 
@@ -205,37 +201,27 @@ def HITS_parallel(graph,step,confidence=1.0e-6):
 
       keys = split_keys(list(graph.keys()), chunk_size)
 
-      print(len(keys))
-      
-      print("cerca di calcolare a")
       result_a = parallel(delayed(calculate_a)(keys[i], graph, h) for i in range(len(keys)))
-      print("finito di calcolare a")
       #print (result_a)
 
       maxA = max([result_a[i][0] for i in range(num_procs)])
 
       a = dict()
 
-      print ("update a")
       for i in range(num_procs):
         a.update(result_a[i][1])
-      print("finished")
 
       for n in a:
         a[n] /= maxA
 
-      print("cerca di calcolare h")
       result_h = parallel(delayed(calculate_h)(keys[i], graph,  a) for i in range(len(keys)))
-      print("finito di calcolare h")
 
       maxH = max([result_h[i][0] for i in range(num_procs)])
 
       h = dict()
 
-      print ("update h")
       for i in range(num_procs):
         h.update(result_h[i][1])
-      print("finished")
 
       for n in h:
         h[n] /= maxH
