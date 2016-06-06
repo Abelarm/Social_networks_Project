@@ -4,3 +4,11 @@ __pycache__
 *.pages
 *.txt
 .idea
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.gz
+*.toc
+*.vrb
