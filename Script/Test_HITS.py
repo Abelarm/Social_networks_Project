@@ -15,7 +15,7 @@ if __name__  == "__main__":
 
         #print("STARTING HITS")
         start_time = timeit.default_timer()
-        time , a, h = HITS_parallel(graph,10)
+        time , a, h = HITS2(graph,1000)
         elapsed += timeit.default_timer() - start_time
         print("HITS2 elapsed: " + str(elapsed))
         #print("Time:" + str(time))

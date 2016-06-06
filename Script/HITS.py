@@ -121,13 +121,13 @@ def HITS2(graph,step,confidence=1.0e-6):
     if diffa <= confidence or diffh < confidence:
         done = 1
 
-    if np.abs(olddiffa-diffa) <= confidence or np.abs(olddiffh-diffh) <= confidence:
-        done = 1
+    #if np.abs(olddiffa-diffa) <= confidence or np.abs(olddiffh-diffh) <= confidence:
+    #    done = 1
 
     olddiffa = diffa
     olddiffh = diffh
 
-    print("Iteration: " + str(time) +"/" +str(step) + " diffa: " + str(diffa) + " diffh " + str(diffh))
+    #print("Iteration: " + str(time) +"/" +str(step) + " diffa: " + str(diffa) + " diffh " + str(diffh))
     
   return time, a, h
 
@@ -253,6 +253,6 @@ def HITS_parallel(graph,step,confidence=1.0e-6):
       olddiffa = diffa
       olddiffh = diffh
 
-      print("Iteration: " + str(time) +"/" +str(step) + " diffa: " + str(diffa) + " diffh " + str(diffh))
+      #print("Iteration: " + str(time) +"/" +str(step) + " diffa: " + str(diffa) + " diffh " + str(diffh))
 
   return time, a, h
