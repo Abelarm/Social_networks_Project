@@ -54,10 +54,11 @@ The purpose of our work is to test different algorithms in the three fundamental
 We will briefly talk about the proposed algorithms, and then compare running times and results obtained from their execution more in detail, suggesting what combination of algorithms seems to be the best for realizing a new search engine.
 \end{frame}
 
-\begin{frame}
-  \frametitle{Overview}
-  \footnotesize \tableofcontents
-\end{frame}
+
+%\begin{frame}
+%  \frametitle{Overview}
+%  \footnotesize \tableofcontents
+%\end{frame}
 
 \AtBeginSection[]
   {
@@ -221,9 +222,22 @@ But we denote in some case that the Algorithm runs until max number of steps are
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+\frametitle{Parallel Version}
+We also implemented the parallel version, but the performance result to be worst compared with the non-parallel version, this is due to overhead of coping all the structure needed for the calculation of scores.\\
+\medskip
+We now present times of 1 iteration of both version:
+\begin{itemize}
+\item \textbf{Non-Parallel}: 
+\item \textbf{Parallel}:
+\end{itemize} 
+\end{frame}
+
 \subsection{Comparing the Results}
 \begin{frame}
-
+\frametitle{Comparing the Results}
+On the time side, the results are incomparable  they differ by $3$ orders of magnitude, even after the tuning.
+CONTINUA CON I VALORI.
 \end{frame}
 
 \section{Matching}
@@ -251,17 +265,52 @@ But we denote in some case that the Algorithm runs until max number of steps are
 
 \subsection{First Price Auction}
 \begin{frame}
+\frametitle{First Price Auction}
+In this kind of auction, bidders submit simultaneous ``sealed bids'' to the seller. The terminology comes from the original format for such auctions, in which bids were written down and provided in sealed envelopes to the seller, who would then open them all together.\\
+\medskip
+\begin{center}\textbf{The highest bidder wins the object \\ and pays the value of her bid.}\end{center}
+\end{frame}
 
+\begin{frame}
+\frametitle{Non - truthfulness of GSP}
+In a sealed-bid first-price auction, the value of your bid not only affects whether you win but also how much you pay.\\
+\medskip
+Bidding your true value is no longer a dominant strategy. By bidding your true value, you would get a payoff of 0 if you lose (as usual), and you would also get a payff of 0 if you win, since you’d pay exactly what it was worth to you.\\
+\medskip
+As a result, the optimal way to bid in a first-price auction is to “shade” your bid slightly downward, so that if you win you will get a positive payoff. Determining how much to shade your bid involves balancing a trade-off between two opposing force.
 \end{frame}
 
 \subsection{Generalized Second Price Auction}
 \begin{frame}
+\frametitle{Generalized Second Price Auction}
+Also called Vickrey auctions. Bidders submit simultaneous sealed bids to the sellers;
+\begin{center} 
+\textbf{The highest bidder wins the object \\
+and pays the value of the second-highest bid.} 
+\end{center}
+These auctions are called Vickrey auctions in honor of William Vickrey, who wrote the first game-theoretic analysis of auctions. Vickery won the Nobel Memorial Prize in Economics in 1996 for this body of work.
+\end{frame}
 
+\begin{frame}
+\frametitle{Truthfulness of GSP}
+Truthful bidding is a dominant strategy in a sealed-bid second-price auction. The heart of the argument is the fact noted at the outset: in a second-price auction, your bid determines whether you win or lose, but not how much you pay in the event that you win. \\
+\medskip
+So in a second-price auction, it makes sense to bid your true value even if other bidders are overbidding, underbidding, colluding, or behaving in other unpredictable ways.
 \end{frame}
 
 \subsection{Results}
 \begin{frame}
+\frametitle{FPA}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/FPA_all.PNG} 
+\end{center}
+\end{frame}
 
+\begin{frame}
+\frametitle{GSP}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/GSP_all.PNG} 
+\end{center}
 \end{frame}
 
 
