@@ -215,16 +215,16 @@ In the HITS algorithm there are two stop rules:
 \item Min confidence on the errors reached
 \end{itemize}
 \medskip
-But we denote in some case that the Algorithm runs until max number of steps are reached, and when this happen the relative error tent to stabilize on a level remain fixed on that, so we added a new stop rule: \\
+We noticed that in some cases the Algorithm runs until the maximum number of steps is reached, and when this happens the relative error trends to stabilize on a fixed level. We decided then to add a new stop rule: \\
 \medskip
 \begin{itemize}
-\item If the the two successive relative errors are equals more a small $\epsilon$ then stop the algorithm.
+\item If two successive relative errors are distant at maximum a small $\epsilon$, then stop the algorithm.
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Parallel Version}
-We also implemented the parallel version, but the performance result to be worst compared with the non-parallel version, this is due to overhead of coping all the structure needed for the calculation of scores.\\
+We also implemented the parallel version, but the performance resulted to be worst compared with the non-parallel version: this is due to overhead of coping all the structures needed for the calculation of scores.\\
 \medskip
 We now present times of 1 iteration of both version:
 \begin{itemize}
@@ -236,24 +236,138 @@ We now present times of 1 iteration of both version:
 \subsection{Comparing the Results}
 \begin{frame}
 \frametitle{Comparing the Results}
-On the time side, the results are incomparable  they differ by $3$ orders of magnitude, even after the tuning.
+On the time side, the results are incomparable since they differ by $3$ orders of magnitude, even after the tuning.
 CONTINUA CON I VALORI.
 \end{frame}
 
 \section{Matching}
 \subsection{Best Match}
 \begin{frame}
-
+\frametitle{The idea of Best Match}
+Given a query $q$, containing $n$ query words, and a set of documents $S$, we define Best Match as a method that finds a subset of document $S_{1}$ such that:
+\begin{itemize}
+	\item $S_{1}$ is included in $S$
+	\item each document of $S_{1}$ has a "reasonable" number of query words in it
+\end{itemize}
+\medskip
+According to this definition the basic Best Match consists of:
+\begin{itemize}
+	\item counting how many query words documents have
+	\begin{itemize}
+		\item we call this value "score" of a document
+		\item it is at maximum $n$
+	\end{itemize}
+	\item ordering in decreasing order of score the documents (optional)
+	\item return all documents whose score is "reasonable"
+	\begin{itemize}
+		\item we use a threshold to define what is "reasonable"
+	\end{itemize}
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{Refining the Best Match}
+Two are the basic refinements to have a more efficient Best Match:
+\begin{itemize}
+	\item using an inverted index
+	\begin{itemize}
+		\item in the form (word -> list of documents containing the word)
+		\item we cicle only on query words instead of on all $S$
+		\item we can have in O(1) all the documents with a determined word  
+	\end{itemize}
+	\item using the frequency instead of assigning score 1 to each query word found
+	\begin{itemize}
+		\item defined as number of occurrences in document $d$ / length($d$)
+		\item requires precalculation of occurences for all words and all $S$...
+		\item ...but it well represents the \textbf{relevance} of documents to a word or query
+	\end{itemize}	
+\end{itemize}
 \end{frame}
 
 \subsection{Improved Best Match}
-\begin{frame}
+\newcounter{sauvegardeenumi}
+\newcommand{\asuivre}{\setcounter{sauvegardeenumi}{\theenumi}}
+\newcommand{\suite}{\setcounter{enumi}{\thesauvegardeenumi}}
 
+\begin{frame}
+\frametitle{Improved Best Match}
+We implemented also the following improved version of Best Match:
+\begin{enumerate}
+	\item Sort documents in each inverted index in order of frequency of the term at which the inverted index refers
+	\item For every query term define its possible impact on the score as the frequency of the most frequent document in its index
+	\item Sort the query terms in decreasing order of impact
+	\item Consider the first 20 documents in the index of the first query term (if the first query term has an index with less than 20 documents, then complete with the first documents in the index of the next query term)
+	\asuivre
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{Improved Best Match}
+\begin{enumerate}	
+	\suite
+	\item Compute the score for each of these documents
+	\item Consider the first term in which there are documents that have not been scored
+	\item Consider the first non-scored document in the index of this term
+	\item If the frequency of the current term in the current document plus the sum of the impact of next terms is larger than the score of the 20-th scored document, then score this document and repeat from 7, otherwise consider the next    
+\end{enumerate}
 \end{frame}
 
 \subsection{Results}
 \begin{frame}
+\frametitle{Creating the Dataset}
+Our experiments ran on a set of approximatively 30000 pages created this way:
+\begin{itemize}
+	\item we choose a web-page for each of the 15 categories listed in https://www.dmoz.org/
+	\item for every of these web pages we crawled 2000 pages by using the Wibbi online crawler
+	\item Moreover, from each pair of sets of 2000 pages, we choose at random 10 pairs of vertices (u, v) with u being a page in the first set and v being a page in the second set and added a link from u to v (if this link was absent)
+\end{itemize}
+\end{frame}
 
+\begin{frame}
+\frametitle{Creating the Dataset}
+Here is the complete list of the websites chosen.
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{lll}
+			\textbf{Category} & \textbf{Website}       & \textbf{Description}                                                                                                                                                                                         \\
+			Arts              & www.imdb.com           & The Internet Movie Database. Features plot summaries, reviews, cast lists, and theatre schedules.                                                                                                            \\
+			Business          & www.moodys.com         & Corporate finance, banking, managed funds and risk management.                                                                                                                                               \\
+			Computers         & www.ibm.com            & Website for International Business Machines Corporation.                                                                                                                                                     \\
+			Games             & www.ign.com            & Videogame news, previews and behind the scenes information.                                                                                                                                                  \\
+			Health            & www.who.int            & World Health Organization. Health and health-related statistical information.                                                                                                                                \\
+			Home              & www.cooks.com          & Recipe search, diet and nutrition, cooking articles and community forum.                                                                                                                                     \\
+			Kids              & www.cartoonnetwork.com & The home of cartoons online - the best cartoons from the past and best new cartoons, on TV and on the web.                                                                                                                                  
+		\end{tabular}%
+	}
+\end{table}
+\end{frame}
+
+\begin{frame}
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+\begin{table}[]
+	\centering
+	\resizebox{\textwidth}{!}{%
+		\begin{tabular}{lll}
+			\textbf{Category} & \textbf{Website}       & \textbf{Description}                                                                                                                                                                                         \\
+			News              & www.foxnews.com        & Breaking News, Latest News and Current News from FoxNews.com. Breaking news and video.                     \\
+			Recreation        & www.lego.com           & Producer of building blocks.                                                                                                                                                                                 \\
+			Reference         & www.britannica.com     & Encyclopaedia Britannica Online. Provides selected articles for free, full text with search capabilities, multimedia and related links for subscribers.                                                      \\
+			Science           & www.nasa.gov           & Comprehensive, world-class center for aeronautics, atmospheric sciences and space technology.                   \\
+			Shopping          & www.amazon.com         & Where customers can find and discover anything they might want to buy online, and endeavors to offer its customers the lowest possible prices. \\
+			Society           & www.un.org             & Daily United Nations news, documents and publications, overview information, conference information, photos, and other UN information resources.                                                             \\
+			Sports            & www.nba.com            & The official site of the National Basketball Association. Includes news, features, multimedia, player profiles, chat transcripts, schedules and statistics.                                                  \\
+			Regional          & www.lonelyplanet.com   & Offers travel advice, detailed maps, travel news, popular message boards and health information. Also lists information and updates regarding guidebooks.                                                   
+		\end{tabular}%
+	}
+\end{table}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Creating the Queries}
+	
 \end{frame}
 
 \section{Search Engine}
@@ -275,9 +389,9 @@ In this kind of auction, bidders submit simultaneous ``sealed bids'' to the sell
 \frametitle{Non - truthfulness of FPA}
 In a sealed-bid first-price auction, the value of your bid not only affects whether you win but also how much you pay.\\
 \medskip
-Bidding your true value is no longer a dominant strategy. By bidding your true value, you would get a payoff of 0 if you lose (as usual), and you would also get a payff of 0 if you win, since you’d pay exactly what it was worth to you.\\
+Bidding your true value is not a dominant strategy. By bidding your true value, you would get a payoff of 0 if you lose (as usual), and you would also get a payff of 0 if you win, since you’d pay exactly what it was worth to you.\\
 \medskip
-As a result, the optimal way to bid in a first-price auction is to “shade” your bid slightly downward, so that if you win you will get a positive payoff. Determining how much to shade your bid involves balancing a trade-off between two opposing force.
+As a result, the optimal way to bid in a first-price auction is to “shade” your bid slightly downward, so that if you win you will get a positive payoff. Determining how much to shade your bid involves balancing a trade-off between two opposing forces.
 \end{frame}
 
 \subsection{Generalized Second Price Auction}
