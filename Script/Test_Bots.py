@@ -2,8 +2,9 @@
 
 from random import randint, random, uniform
 from Balance import *
-from Bots import *
+import Bots
 
+'''
 #All possible queries
 queries=["prova"]
 tp = "fpa"
@@ -46,14 +47,12 @@ adv_budgets["z"] = 25
 
 #Advertisers' bots
 adv_bots=dict()
-adv_bots["x"] = random
-adv_bots["y"] = best_preferential_competitor
-adv_bots["z"] = best_preferential_competitor
 
 test_name = "x"
 
 #It denotes the lenght of the sequence of queries that we will consider
 num_query=10
+'''
 
 def run_auction(test_name, num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold, tp):
 
@@ -61,6 +60,7 @@ def run_auction(test_name, num_query, queries, slot_ctrs, adv_values, adv_budget
     adv_bids=dict()
     #Generate a random sequence of num_query queries, with each query selected from the list queries
     query_sequence=[]
+    tot_ut = 0
     for i in range(num_query):
         #query_sequence.append("prova")
         query_sequence.append(queries[randint(0,len(queries)-1)])
@@ -106,6 +106,10 @@ def run_auction(test_name, num_query, queries, slot_ctrs, adv_values, adv_budget
 
         pref_id_num = int(pref_id.replace("id", ""))
         obt_id_num = int(obt_id.replace("id", ""))
+
+        if obt_id_num != 1000:
+            tot_ut += slot_ctrs[current_query][obt_id]*(adv_values[current_query][test_name] - query_pay[test_name])
+
         #print(pref_id_num, obt_id_num)
         if pref_id_num > obt_id_num:
            #print("he got better")
@@ -148,25 +152,40 @@ def run_auction(test_name, num_query, queries, slot_ctrs, adv_values, adv_budget
                 
         #print(current_query, query_winners, query_pay, adv_cbudgets)
         
-    return float(test_name_val)/num_query, revenue
+    return float(test_name_val)/num_query, tot_ut, revenue
 
 '''
 threshold = 0
 
-tot_val = 0
-tot_rev = 0
-rep = 10000
-for i in range(rep):
-    tmp = run_auction(num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold ,tp)
-    val = tmp[0]
-    rev = tmp[1]
-    #print(val)
-    tot_val += val
-    tot_rev += rev
+tps = ['gsp', 'fpa']
+bots = ['best_response', 'best_response_competitive', 'best_response_altruistic', 'competitor', 'budget_saving', 'random',  'competitor_budget', 'preferential_competitor', 'best_competitor_budget', 'best_preferential_competitor']
+for tp in tps:
+    for my_bot in bots:
+        for adv_bot in bots:
 
-print ("Totale Val:\t\t" + str(float(tot_val)/rep))
-print ("Totale Rev:\t\t" + str(float(tot_rev)/rep))
+            print ("AUCTION: " + tp + " I: " + my_bot + " ENEMIES: " + adv_bot)
+
+            adv_bots["x"] = getattr(Bots, my_bot)
+            adv_bots["y"] = getattr(Bots, adv_bot)
+            adv_bots["z"] = getattr(Bots, adv_bot)
+
+            tot_val = 0
+            ut_val = 0
+            tot_rev = 0
+            rep = 10000
+            for i in range(rep):
+                tmp = run_auction(test_name, num_query, queries, slot_ctrs, adv_values, adv_budgets, adv_bots, threshold ,tp)
+                val = tmp[0]
+                ut  = tmp[1]
+                rev = tmp[2]
+                #print(val)
+                tot_val += val
+                ut_val += ut 
+                tot_rev += rev
+
+            print ("Totale Val:\t\t" + str(float(tot_val)/rep))
+            print ("Totale Uti:\t\t" + str(float(ut_val)/rep))
+            print ("Totale Rev:\t\t" + str(float(tot_rev)/rep))
 '''
-
 
 

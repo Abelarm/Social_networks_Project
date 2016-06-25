@@ -19,16 +19,16 @@ def query():
 		if p > 0.7:
 			if len(db[k]) > 7:
 				query["0.7"][k] = db[k][:7]
-		if p > 0.6:
+		if 0.6 < p < 0.7 :
 			if len(db[k]) > 6:
 				query["0.6"][k] = db[k][:6]
-		if p > 0.5:
+		if 0.5 < p < 0.6:
 			if len(db[k]) > 5:
 				query["0.5"][k] = db[k][:5]
-		if p < 0.4:
+		if 0.4 < p < 0.5:
 			if len(db[k]) > 4:
 				query["0.4"][k] = db[k][:4]
-		if p < 0.3:
+		if 0.3 < p < 0.4:
 			if len(db[k]) > 3:
 				query["0.3"][k] = db[k][:3]
 

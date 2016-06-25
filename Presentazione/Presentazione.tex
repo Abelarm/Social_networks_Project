@@ -226,10 +226,10 @@ We noticed that in some cases the Algorithm runs until the maximum number of ste
 \frametitle{Parallel Version}
 We also implemented the parallel version, but the performance resulted to be worst compared with the non-parallel version: this is due to overhead of coping all the structures needed for the calculation of scores.\\
 \medskip
-We now present times of 1 iteration of both version:
+We now present times of 10 iteration of both version:
 \begin{itemize}
-\item \textbf{Non-Parallel}: 
-\item \textbf{Parallel}:
+\item \textbf{Non-Parallel}: 4,15''
+\item \textbf{Parallel}: 53,41''
 \end{itemize} 
 \end{frame}
 
@@ -244,10 +244,9 @@ CONTINUA CON I VALORI.
 \subsection{Best Match}
 \begin{frame}
 \frametitle{The idea of Best Match}
-Given a query $q$, containing $n$ query words, and a set of documents $S$, we define Best Match as a method that finds a subset of document $S_{1}$ such that:
+Given a query $q$, containing $n$ query words, and a set of documents $S$, we define Best Match as a method that finds a subset of document $S'$ such that:
 \begin{itemize}
-	\item $S_{1}$ is included in $S$
-	\item each document of $S_{1}$ has a "reasonable" number of query words in it
+	\item each document $s_i$ of $S'$ has a "reasonable" number of query words in it
 \end{itemize}
 \medskip
 According to this definition the basic Best Match consists of:
@@ -267,20 +266,20 @@ According to this definition the basic Best Match consists of:
 \begin{frame}
 \frametitle{Refining the Best Match}
 Two are the basic refinements to have a more efficient Best Match:
-\begin{itemize}
+\begin{enumerate}
 	\item using an inverted index
 	\begin{itemize}
 		\item in the form (word -> list of documents containing the word)
-		\item we cicle only on query words instead of on all $S$
+		\item than the keys of the dataset are the query words
 		\item we can have in O(1) all the documents with a determined word  
 	\end{itemize}
 	\item using the frequency instead of assigning score 1 to each query word found
 	\begin{itemize}
 		\item defined as number of occurrences in document $d$ / length($d$)
-		\item requires precalculation of occurences for all words and all $S$...
-		\item ...but it well represents the \textbf{relevance} of documents to a word or query
+		\item requires precalculation of occurrences for all words and all $S$
+		\item it represents the \textbf{relevance} of documents to a particular word or query
 	\end{itemize}	
-\end{itemize}
+\end{enumerate}
 \end{frame}
 
 \subsection{Improved Best Match}
@@ -332,13 +331,13 @@ Here is the complete list of the websites chosen.
 	\resizebox{\textwidth}{!}{%
 		\begin{tabular}{lll}
 			\textbf{Category} & \textbf{Website}       & \textbf{Description}                                                                                                                                                                                         \\
-			Arts              & www.imdb.com           & The Internet Movie Database. Features plot summaries, reviews, cast lists, and theatre schedules.                                                                                                            \\
-			Business          & www.moodys.com         & Corporate finance, banking, managed funds and risk management.                                                                                                                                               \\
-			Computers         & www.ibm.com            & Website for International Business Machines Corporation.                                                                                                                                                     \\
-			Games             & www.ign.com            & Videogame news, previews and behind the scenes information.                                                                                                                                                  \\
-			Health            & www.who.int            & World Health Organization. Health and health-related statistical information.                                                                                                                                \\
-			Home              & www.cooks.com          & Recipe search, diet and nutrition, cooking articles and community forum.                                                                                                                                     \\
-			Kids              & www.cartoonnetwork.com & The home of cartoons online - the best cartoons from the past and best new cartoons, on TV and on the web.                                                                                                                                  
+			Arts              & www.imdb.com           & The Internet Movie Database \\
+			Business          & www.moodys.com         & Corporate finance, banking                                                                                                                        \\
+			Computers         & www.ibm.com            &International Business Machines Corporation.                                                                                                                                                     \\
+			Games             & www.ign.com            & Videogame news     \\
+			Health            & www.who.int            & World Health Organization \\
+			Home              & www.cooks.com          & Recipe search  \\
+			Kids              & www.cartoonnetwork.com & The home of cartoons online
 		\end{tabular}%
 	}
 \end{table}
@@ -351,15 +350,15 @@ Here is the complete list of the websites chosen.
 	\centering
 	\resizebox{\textwidth}{!}{%
 		\begin{tabular}{lll}
-			\textbf{Category} & \textbf{Website}       & \textbf{Description}                                                                                                                                                                                         \\
-			News              & www.foxnews.com        & Breaking News, Latest News and Current News from FoxNews.com. Breaking news and video.                     \\
-			Recreation        & www.lego.com           & Producer of building blocks.                                                                                                                                                                                 \\
-			Reference         & www.britannica.com     & Encyclopaedia Britannica Online. Provides selected articles for free, full text with search capabilities, multimedia and related links for subscribers.                                                      \\
-			Science           & www.nasa.gov           & Comprehensive, world-class center for aeronautics, atmospheric sciences and space technology.                   \\
-			Shopping          & www.amazon.com         & Where customers can find and discover anything they might want to buy online, and endeavors to offer its customers the lowest possible prices. \\
-			Society           & www.un.org             & Daily United Nations news, documents and publications, overview information, conference information, photos, and other UN information resources.                                                             \\
-			Sports            & www.nba.com            & The official site of the National Basketball Association. Includes news, features, multimedia, player profiles, chat transcripts, schedules and statistics.                                                  \\
-			Regional          & www.lonelyplanet.com   & Offers travel advice, detailed maps, travel news, popular message boards and health information. Also lists information and updates regarding guidebooks.                                                   
+			\textbf{Category} & \textbf{Website}       & \textbf{Description}                                                                                                                                                                                       \\
+			News              & www.foxnews.com        & Breaking News\\
+			Recreation        & www.lego.com           & Producer of bilding blocks.                                                                                                                                                                             \\
+			Reference         & www.britannica.com     & Encyclopaedia Britannica Online.\\
+			Science           & www.nasa.gov           & Comprehensive, world-class center for aeronautics                   \\
+			Shopping          & www.amazon.com         & Most know shopping website\\
+			Society           & www.un.org             & Daily United Nations news, documents and publications \\
+			Sports            & www.nba.com            & The official site of the National Basketball Association\\
+			Regional          & www.lonelyplanet.com   & Offers travel advice, detailed maps, travel news                                                   
 		\end{tabular}%
 	}
 \end{table}
@@ -371,6 +370,25 @@ Here is the complete list of the websites chosen.
 \end{frame}
 
 \section{Search Engine}
+\begin{frame}
+\frametitle{Search Engine}
+The implemented Search Engine combine the algorithms seen before.\\ 
+Given a query:
+\begin{enumerate}
+\item Find the documents that match the query using:
+\begin{itemize}
+\item Best Match
+\item Improved Best Match
+\end{itemize}
+\item Order these documents by:
+\begin{itemize}
+\item Page Rank Score
+\item HITS authority
+\end{itemize}
+\end{enumerate}
+\end{frame}
+
+\subsection{Results}
 \begin{frame}
 
 \end{frame}

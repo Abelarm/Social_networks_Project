@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from numpy import add,dot,multiply
+from decimal import *
 from math import sqrt
 from joblib import Parallel, delayed
 
@@ -57,12 +58,13 @@ def pageRank2(graph,s,step,confidence):
     for i in nodes:
       tmp[i] = float(1-s)/n #Each nodes receives a share of 1/n with probability 1-s
     
+    diocane = 0
     for i in nodes:
-      if type(graph[i] == float):
+      if type(graph[i]) == float:
         continue
       for j in graph[i]:
         tmp[j] += float(s*rank[i])/len(graph[i]) #Each nodes receives a fraction of its neighbor rank with probability s 
-    
+
     #Computes the distance between the old rank vector and the new rank vector in L_1 norm
     diff = 0
     for i in nodes:
