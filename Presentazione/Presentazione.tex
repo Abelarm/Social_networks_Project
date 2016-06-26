@@ -1,6 +1,6 @@
 \documentclass{beamer}
 
-\usepackage[italian]{babel}
+\usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{beamerthemeAntibes}
 \usepackage{graphicx}
@@ -54,17 +54,20 @@ The purpose of our work is to test different algorithms in the three fundamental
 We will briefly talk about the proposed algorithms, and then compare running times and results obtained from their execution more in detail, suggesting what combination of algorithms seems to be the best for realizing a new search engine.
 \end{frame}
 
-
-%\begin{frame}
-%  \frametitle{Overview}
-%  \footnotesize \tableofcontents
-%\end{frame}
+\begin{frame}
+ \frametitle{Overview}
+ \footnotesize \tableofcontents
+ \end{frame}
 
 \AtBeginSection[]
   {
      \begin{frame}<beamer>
      \frametitle{Overview}
-   \footnotesize \tableofcontents[currentsection]
+   \footnotesize \tableofcontents[
+   						sectionstyle=show/shaded,
+   						subsectionstyle=show/show/hide,
+   						subsubsectionstyle=show/show/show/hide
+        					]
      \end{frame}
 }
 
@@ -431,20 +434,159 @@ So in a second-price auction, it makes sense to bid your true value even if othe
 \end{frame}
 
 \subsection{Results}
+\subsubsection{Selecting Bots}
 \begin{frame}
-\frametitle{FPA}
-\begin{center}
-\includegraphics[scale=0.46]{img/Auctions/FPA_all.PNG} 
+\frametitle{Selection of interesting Bots}
+The configuration of the experiment for founding the most interesting bots is the following:
+\begin{itemize}
+\item \textbf{Number of Query Words} 1
+\item \textbf{Number of Auction} 10
+\item \textbf{Slot 1 click-through } 0.4
+\item \textbf{Slot 2 click-through } 0.15
+\item \textbf{Number of Advertiser} 3
+\begin{itemize}
+\item 1 bot to test and 2 enemies (of the same kind)
+\end{itemize}
+\item \textbf{Values} 7
+\item \textbf{Budgets}  25
+\item \textbf{Number of runs } 10000
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{FPA Utility}
+\begin{center}\includegraphics[scale=0.46]{img/Auctions/FPA_all_Utility.PNG} 
 \end{center}
 \end{frame}
 
 \begin{frame}
-\frametitle{GSP}
+\frametitle{Considerations on FPA advertiser-side }
+Observing FPA graph it seems that \textit{best\_response\_altruistic} is the best bot, yielding the \alert{highest} utility.\\
+\medskip
+This is due to the fact the bots that try to save their budgets, offer the lowest bid possible.
+Since these bids are ``far'' from the advertiser's values and FPA is not truthful, they have a high chance to have a good slot at low price. 
+\end{frame}
+
+\begin{frame}
+\frametitle{Considerations on FPA seller-side }
+The bots who tries to save their budget on seller-side are the \alert{worst}, because they lower not only their own bids, but also the bids of the whole auction.\\
+\medskip
+It follows that the other kinds of bot which raise their bids are more \alert{lucrative} for us.\\
+\medskip
+For the reasons explained before we need a balance between high revenue and high utility, and the bot that seems to accomplish this is \textbf{best\_response}.
+\end{frame}
+
+\begin{frame}
+\frametitle{GPS Utility}
 \begin{center}
-\includegraphics[scale=0.46]{img/Auctions/GSP_all.PNG} 
+\includegraphics[scale=0.46]{img/Auctions/GSP_all_Utility.PNG} 
 \end{center}
 \end{frame}
 
 
+\begin{frame}
+\frametitle{Considerations on GSP advertiser-side}
+We notice that, since GPS is truthful, the bots that offer bids near to their ``real'' value perform \alert{better}, obtaining a higher utility.\\
+\medskip
+For this reason all the bots that tent to lower the bids, stray from the ``real'' value, perform a lot \alert{worst}, obtaining a lower utility. 
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Considerations on GSP seller-side}
+We notice that there are a lot of bots with utility $\sim6,5$.\\
+\medskip
+But we also notice there are a lot of fluctuation on the revenue, difficult to explain.\\
+\bigskip
+For this reason we decided to calculate an heuristic about the quantity and quality of slots obtained.
+\end{frame}
+
+\begin{frame}
+\frametitle{Our heuristic}
+The heuristic for a bidder is calculated as follow:\\
+\medskip
+On each step of an auction, given the \textbf{preferred\_slot} and the result of that step.
+\begin{itemize}
+\item Add $1$ if the bidder obtains the \textbf{preferred\_slot}, or he wants nothing and obtain nothing 
+\item Add $2$ if the bidder obtains a better slot, since he bids for a worse slot.
+\item Subtract $1$ if the bidder obtain a worse slot, since he bids for a better slot.
+\end{itemize}
+We mediate this score on the auction step.
+\\Straddling in the range $ [-1;2]$
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Heuristic on FPA}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/FPA_all_Heuristic.PNG} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Considerations on FPA heuristic}
+Considering the bots the have the higher utility (best\_response\_altruistic, budget\_saving) we notice that they have a very \alert{low} heuristic score, this is due to the fact they tend the obtain the slots that the don't ``want'' but a very \alert{low price} resulting in a high utility.\\
+\medskip
+On the other hand aggressive bidders, tent to have a better heuristic score but a worse utility, since they pay a lot for the slot they obtain.\\
+\medskip
+\textbf{For the FPA the revenue is not dependant on the heuristic score}, but on the ``nature'' of the bot.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Heuristic on GSP}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/GSP_all_Heuristic.PNG} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Considerations on GSP heuristic}
+Thanks to the heuristic score  we can divide the bots in several groups, the ``blind'' competitors, the ``wise'' competitors and  the ``stingy''.\\
+\begin{table}[]
+\centering
+\begin{tabular}{l|l|l|l|}
+\cline{2-4}
+                                                  & \textbf{Utility} & \textbf{H\_score} & \textbf{Revenue} \\ \hline
+\multicolumn{1}{|l|}{\textbf{"Blind" competitor}} & High             & Low               & High             \\ \hline
+\multicolumn{1}{|l|}{\textbf{"Wise" competitor}}  & High             & High              & Average          \\ \hline
+\multicolumn{1}{|l|}{\textbf{"Stingy"}}           & Low              & Low               & Low              \\ \hline
+\end{tabular}
+\caption{Resume}
+\label{my-label}
+\end{table}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Comparing FPA and GPS results}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/Combined_Utility.PNG} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Comparing FPA and GPS results}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/Combined_Heuristic.PNG} 
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Comparing FPA and GPS results}
+Comparing the auction types, we notice that on a ``fixed'' auction they have the following behaviour:
+\begin{itemize}
+\item FPA auction produce the \alert{highest} revenue for the seller, this follow from the fact that you pay exactly what you bid. As for clients satisfaction, we notice that they have bot at \alert{low} heuristic and  utility compared to GPS.
+\item GPS instead produce \alert{lowest} revenue and \alert{high} utility and heuristic score for the client, this is due the nature of GPS:\\
+the winner of a slot can offer a very high bid without having too much impact on what he pays, because he doesn't hid bid bud the bids immediately lower than his.
+\end{itemize}
+The choice depends of what we want  to ``favour''
+\end{frame}
+
+\subsubsection{Experiment on ``real'' case}
+\begin{frame}
+
+\end{frame}
 
 \end{document}
