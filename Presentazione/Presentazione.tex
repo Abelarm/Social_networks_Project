@@ -369,8 +369,7 @@ Here is the complete list of the websites chosen.
 \end{frame}
 
 \begin{frame}
-	\frametitle{Creating the Queries}
-	
+	\frametitle{GRAFICI TEMPI}
 \end{frame}
 
 \section{Search Engine}
@@ -394,7 +393,21 @@ Given a query:
 
 \subsection{Results}
 \begin{frame}
+\frametitle{Running configurations}
+\begin{itemize}
+\item We ran the experiment for a total of 25 queries
+\item 5 for each length between 3 and 7
+\begin{itemize}
+\item In each group of 5 queries 1 of them is manually constructed by us for having a high likelihood with a real query
+\item The other 4 are randomly generated among the dataset
+\end{itemize} 
+\item The manual generated  query are used not only for calculate the execution time, but also for fully analysing the output of search engine
+\end{itemize}
+\end{frame}
 
+\begin{frame}
+\frametitle{Best Match Considerations}
+We notice that there is an \alert{high} correlation within the first positions on the documents ordered by PageRank and HITS, this means that event if the value of the ranking algorithms are not comparable absolutely, tent to have a \alert{relative} comparability.
 \end{frame}
 
 \section{Auction}
@@ -553,7 +566,7 @@ We mediate this score on the auction step.
 
 \begin{frame}
 \frametitle{Considerations on FPA heuristic}
-Considering the bots the have the higher utility (best\_response\_altruistic, budget\_saving) we notice that they have a very \alert{low} heuristic score, this is due to the fact they tend the obtain the slots that the don't ``want'' but a very \alert{low price} resulting in a high utility.\\
+Considering the bots the have the higher utility (best\_response\_altruistic, budget\_saving) we notice that they have a very \alert{low} heuristic score, this is due to the fact they tent the obtain the slots that the don't ``want'' but a very \alert{low price} resulting in a high utility.\\
 \medskip
 On the other hand aggressive bidders, tent to have a better heuristic score but a worse utility, since they pay a lot for the slot they obtain.\\
 \medskip
