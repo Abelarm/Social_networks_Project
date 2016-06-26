@@ -42,13 +42,14 @@ def compute_weight(impacts, word_advs, doc):
 
 def remove_and_add(docs, last_sorted_docs_key, k, weight):
 
-    #print("Removed k:" + str(last_sorted_docs_key) +" v: " + str(docs[last_sorted_docs_key]))
-    del docs[last_sorted_docs_key]
+    if k not in docs:
+        #print("Removed k:" + str(last_sorted_docs_key) +" v: " + str(docs[last_sorted_docs_key]))
+        del docs[last_sorted_docs_key]
+        #print("Added k:" + str(k) +" v: " + str(weight))
+        docs[k] = weight
 
-    #print("Added k:" + str(k) +" v: " + str(weight))
-    docs[k] = weight
-
-    return OrderedDict(sorted(docs.items(), key = operator.itemgetter(1), reverse=True))
+    toret = OrderedDict(sorted(docs.items(), key = operator.itemgetter(1), reverse=True))
+    return toret
 
 
 def update_docs(to_consider, word_advs, impacts, impact_keys, docs):

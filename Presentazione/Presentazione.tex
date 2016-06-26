@@ -434,6 +434,33 @@ So in a second-price auction, it makes sense to bid your true value even if othe
 \end{frame}
 
 \subsection{Results}
+
+\subsubsection{Bots}
+\begin{frame}
+\frametitle{Description of Bots}
+We used the following bots:
+\begin{itemize}
+\item \textbf{Best\_response} with balanced tie-breaking rules
+\item \textbf{Best\_response\_competitive} submit the highest possible bid that gives the preferred\_slot
+\item \textbf{Best\_response\_altruistic } submit the lowest possible bid that gives the preferred\_slot
+\item \textbf{Competitor} always submit a bit grater than the highest bid
+\item \textbf{Budget\_saving} always submit the minimum between last-non winning bid and advertiser value
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Description of Bots}
+We used the following bots:
+\begin{itemize}
+\item \textbf{Competitor\_budget} Use competitor when budget is more than its half, best\_response otherwise  
+\item \textbf{Preferential\_competitor} Use competitor when value is more than a threshold, budget\_saving otherwise
+\item \textbf{Best\_competitor\_budget} Use best\_response\_competitive when budget is more than its half, best\_response otherwise
+\item \textbf{Best\_preferential\_competitor} Use best\_response\_competitive when value is more than a threshold, budget\_saving otherwise
+\item \textbf{Random} bids randomly
+\end{itemize}
+\end{frame}
+
+
 \subsubsection{Selecting Bots}
 \begin{frame}
 \frametitle{Selection of interesting Bots}
@@ -584,9 +611,80 @@ the winner of a slot can offer a very high bid without having too much impact on
 The choice depends of what we want  to ``favour''
 \end{frame}
 
-\subsubsection{Experiment on ``real'' case}
+\subsubsection{Experiment on ``real case''}
 \begin{frame}
+\frametitle{Running Configuration}
+\begin{itemize}
+\item \textbf{Number of Query Words} 10
+\item \textbf{Number of Auction} 20
+\item \textbf{Number of Slot for each word} [2, 4]
+\item \textbf{Slot i click-through } [0,1]
+\item \textbf{Number of Advertiser} 6
+\begin{itemize}
+\item 1 bot to test and 5 enemies (of the same kind)
+\end{itemize}
+\item \textbf{Values} [0, 20]
+\item \textbf{Budgets}  [10, 50]
+\item \textbf{Minimum Interest Threshold} [5, 15]
+\item \textbf{Number of runs } 500
+\end{itemize}
+We choose two bots that have the best result among all the auction, and the worst one.
+\end{frame}
 
+\begin{frame}
+\frametitle{Utility FPA}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/RFPA_all_Utility.PNG} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Heuristic FPA}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/RFPA_all_Heuristic.PNG} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Consideration on FPA}
+As expected the utility shows the \alert{same} behaviour as in the fixed auction and difference on the revenue are almost irrelevant.\\
+\medskip
+We notice \alert{worsening} on the best\_preferential\_competitor due the fact that his behaviour is based on the threshold, that can change on different runs, this leads to more variability. 
+\end{frame}
+
+\begin{frame}
+\frametitle{Utility GSP}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/RGSP_all_Utility.PNG} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Heuristic GSP}
+\begin{center}
+\includegraphics[scale=0.46]{img/Auctions/RGSP_all_Heuristic.PNG}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Consideration on GSP}
+In regards to utility and revenue, we notice that GPS shows the \alert{same} behaviour, as said in FPA best\_prefential\_competitor shows a \alert{worsening} for the same reason.\\
+\medskip
+Instead budget\_saving \alert{improve} his behaviour, still remaining the worst, because in each run the budget is not fixed.
+\end{frame}
+
+\begin{frame}
+\frametitle{FPA vs GSP}
+As seen in the fixed example, we can observe that:
+\begin{itemize}
+\item FPA lead to a \alert{higher} revenue compared to GPS
+\item GPS hold a \alert{higher} utility and heuristic in relation to FPA
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering 
+\Huge{Thank you for the attention.}
 \end{frame}
 
 \end{document}
