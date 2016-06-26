@@ -219,10 +219,10 @@ In the HITS algorithm there are two stop rules:
 \end{itemize}
 \medskip
 We noticed that in some cases the Algorithm runs until the maximum number of steps is reached, and when this happens the relative error trends to stabilize on a fixed level. We decided then to add a new stop rule: \\
-\medskip
 \begin{itemize}
 \item If two successive relative errors are distant at maximum a small $\epsilon$, then stop the algorithm.
 \end{itemize}
+We tried this improvement on the full graph, we plotted as a pink line \dots the difference is embarrassing 
 \end{frame}
 
 \begin{frame}
@@ -239,8 +239,9 @@ We now present times of 10 iteration of both version:
 \subsection{Comparing the Results}
 \begin{frame}
 \frametitle{Comparing the Results}
-On the time side, the results are incomparable since they differ by $3$ orders of magnitude, even after the tuning.
-CONTINUA CON I VALORI.
+On the time side, the results are incomparable since they the HITS time is up to $40$ time the PageRank time.\\
+\medskip
+The values for the nature of the algorithms are impossible to compare even if we tried.
 \end{frame}
 
 \section{Matching}
