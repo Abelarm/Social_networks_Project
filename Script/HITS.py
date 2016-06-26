@@ -121,8 +121,8 @@ def HITS2(graph,step,confidence=1.0e-6):
     if diffa <= confidence or diffh < confidence:
         done = 1
 
-    #if np.abs(olddiffa-diffa) <= confidence or np.abs(olddiffh-diffh) <= confidence:
-    #    done = 1
+    if np.abs(olddiffa-diffa) <= confidence or np.abs(olddiffh-diffh) <= confidence:
+        done = 1
 
     olddiffa = diffa
     olddiffh = diffh
