@@ -48,14 +48,14 @@ adv_bots=dict()
 test_name = "x"
 
 #It denotes the lenght of the sequence of queries that we will consider
-num_query=100000
+num_query=1000
 threshold = 0
 
 tps = ['gsp', 'fpa']
 bots = ['best_response', 'best_response_competitive', 'best_response_altruistic', 'competitor', 'budget_saving', 'random',  'competitor_budget', 'preferential_competitor', 'best_competitor_budget', 'best_preferential_competitor']
 for tp in tps:
-    for my_bot in bots[:1]:
-        for adv_bot in bots[:1]:
+    for my_bot in bots[1:2]:
+        for adv_bot in bots[1:2]:
 
             print ("AUCTION: " + tp + " I: " + my_bot + " ENEMIES: " + adv_bot)
 

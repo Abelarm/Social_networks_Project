@@ -86,7 +86,7 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
     step = len(history)
     
     if step == 0:
-        return toret, uniform(0, 1)
+        return toret, 0.1
 
     #Initialization
     for i in range(1, step+1):
@@ -95,7 +95,7 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return toret, uniform(0, 1)
+            return toret, 0.1
 
     sort_bids = sorted(adv_bids[query].values(), reverse=True)
 
