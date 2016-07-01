@@ -1,5 +1,6 @@
 import json
 from collections import OrderedDict
+import re
 import operator
 
 def load():
@@ -17,6 +18,40 @@ def get_graph():
 		graph = data[name]["graph"]
 		all_graph.update(graph)
 	return all_graph
+
+def dump_forD3():
+	graph = get_graph()
+	nodes = []
+	links = []
+	keys = list(graph.keys())
+	print ("Starting creating graph for d3")
+	for k in keys:
+		obj = dict()
+		obj["name"] = k
+		group =  re.search('^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)',k)
+		if group.group(0):
+			obj["group"] = group.group(0)
+		else:
+			obj["group"] =  "ukn"
+
+		nodes.append(obj)
+		if type(graph[k]) == float:
+			continue
+		for o in graph[k]:
+			link = dict()
+			link["source"] = keys.index(k)
+			link["target"] = keys.index(o)
+			link["value"] = 1
+			links.append(link)
+
+	graph_d3 = dict()
+	graph_d3["nodes"] = nodes
+	graph_d3["links"] = links
+	print ("Starting dumping")
+	with open('graph_D3.json', 'w') as fp:
+		stri = json.dumps(full_graph, ensure_ascii=False)
+		fp.write(stri)
+
 
 def get_graph_partial(num):
 	all_graph = dict()
