@@ -1,7 +1,7 @@
 import Bots
 import load_dataset 
 import random as rm
-from Test_Bots import run_auction
+from run_auction import *
 
 queries = ["national", "granmother", "hotel", "painting", "salamander", "buidling", "obama", "university", "console", "art"]
 advertiser = ["x", "y", "z", "w", "k", "q"]

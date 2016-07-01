@@ -9,7 +9,7 @@ def best_response(name, adv_value, threshold, budget, current_budget, slot_ctrs,
     step = len(history)
     
     if step == 0:
-        return toret, uniform(0, 1)
+        return toret, 0.1
     
     #Initialization
     for i in range(1, step+1):
@@ -18,7 +18,7 @@ def best_response(name, adv_value, threshold, budget, current_budget, slot_ctrs,
             adv_bids = history[step-i][query]["adv_bids"]
             break
         if step-i == 0:
-            return toret, uniform(0, 1)
+            return toret, 0.1
 
     sort_bids=sorted(adv_bids[query].values(), reverse=True)
 
@@ -201,6 +201,7 @@ def best_response_altruistic(name, adv_value, threshold, budget, current_budget,
                     tmp_pay = sort_bids[i+1] #then, I must pay for that slot the bid of the next advertiser
 
     #2) Evaluate for each slot, which one gives to the advertiser the largest utility
+        print tmp_pay
         new_utility = slot_ctrs[query][sort_slots[i]]*(adv_value-tmp_pay)
 
         if new_utility > utility:
