@@ -49,7 +49,7 @@ def dump_forD3():
 	graph_d3["links"] = links
 	print ("Starting dumping")
 	with open('graph_D3.json', 'w') as fp:
-		stri = json.dumps(full_graph, ensure_ascii=False)
+		stri = json.dumps(graph_d3, ensure_ascii=False)
 		fp.write(stri)
 
 
