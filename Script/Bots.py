@@ -112,8 +112,8 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
 
     for i in range(len(sort_slots)):
 
-        if i < last_slot: #If I take a slot better than the one previously assigned to me
-            tmp_pay = sort_bids[i] #then, I must pay for that slot the bid of the advertiser at which that slot was previously assigned
+        if i < last_slot: 
+            tmp_pay = sort_bids[i]
 
         elif i >= len(sort_bids) - 1: #If I take the last slot, I must pay 0
             tmp_pay = 0
@@ -123,11 +123,11 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
                 tmp_pay = sort_bids[0]
             else:
                 if tp == "fpa":
-                    tmp_pay = sort_bids[i] #then, I must pay for that slot the bid of the next advertiser
+                    tmp_pay = sort_bids[i] #then, I must pay at least for that slot the bid of that advertiser
                 elif tp == "gsp":
                     tmp_pay = sort_bids[i+1] #then, I must pay for that slot the bid of the next advertiser
 
-    #2) Evaluate for each slot, which one gives to the advertiser the largest utility
+        #2) Evaluate for each slot, which one gives to the advertiser the largest utility
         new_utility = slot_ctrs[query][sort_slots[i]]*(adv_value-tmp_pay)
 
         if new_utility > utility:
@@ -140,16 +140,16 @@ def best_response_competitive(name, adv_value, threshold, budget, current_budget
     #3) Evaluate which bid to choose among the ones that allows the advertiser to being assigned the slot selected at the previous step
     #ultima slot
     if preferred_slot == -1:
-        # TIE-BREAKING RULE: I choose the largest bid smaller than my value for which I lose
+        # TIE-BREAKING RULE: I choose the largest bid between my value and the last bid
         return toret, max(adv_value, sort_bids[len(sort_slots)])
 
     toret["slot"] = sort_slots[preferred_slot]
 
     #prima slot
     if preferred_slot == 0:
-        # TIE-BREAKING RULE: I choose the bid that is exactly in the middle between my own value and the next bid
+        # TIE-BREAKING RULE: I choose the largest bid between my value and the first bid
         return toret, max(payment, adv_value)
-    #TIE-BREAKING RULE: If I like slot j, I choose the bid b_i for which I am indifferent from taking j at computed price or taking j-1 at price b_i
+    # TIE-BREAKING RULE: I bid the value of prec of desired slot bid subtracting a small value
     return toret, sort_bids[preferred_slot-1] - 0.01
 
 def best_response_altruistic(name, adv_value, threshold, budget, current_budget, slot_ctrs, history, query, tp):
@@ -214,7 +214,7 @@ def best_response_altruistic(name, adv_value, threshold, budget, current_budget,
     #3) Evaluate which bid to choose among the ones that allows the advertiser to being assigned the slot selected at the previous step
     #ultima slot
     if preferred_slot == -1:
-        # TIE-BREAKING RULE: I choose the largest bid smaller than my value for which I lose
+         # TIE-BREAKING RULE: I choose the small value between my value and the last bid
         return toret, min(adv_value, sort_bids[len(sort_slots)])
 
     toret["slot"] = sort_slots[preferred_slot]
@@ -224,7 +224,7 @@ def best_response_altruistic(name, adv_value, threshold, budget, current_budget,
         # TIE-BREAKING RULE: I choose the bid that is exactly in the middle between my own value and the next bid
         return toret, min(adv_value, payment)
 
-    #TIE-BREAKING RULE: If I like slot j, I choose the bid b_i for which I am indifferent from taking j at computed price or taking j-1 at price b_i
+    # TIE-BREAKING RULE: I bid the value of desired slot bid adding a small value
     return toret, sort_bids[preferred_slot] + 0.01
 
 
@@ -249,7 +249,7 @@ def competitor(name, adv_value, threshold, budget, current_budget, slot_ctrs, hi
     sort_slots = sorted(slot_ctrs[query].keys(), key=slot_ctrs[query].__getitem__, reverse=True)
 
     toret["slot"] = sort_slots[0]
-
+    #always bit the highest bid
     return toret, sort_bids[0] + 0.01
 
 
@@ -280,6 +280,7 @@ def budget_saving(name, adv_value, threshold, budget, current_budget, slot_ctrs,
     sort_slots = sorted(slot_ctrs[query].keys(), key=slot_ctrs[query].__getitem__, reverse=True)
     toret["slot"] = sort_slots[len(sort_slots)-1]
 
+    #always bid the minumum value between the minimun bids and my value
     return toret, min(min_value, adv_value)
 
 
@@ -298,6 +299,7 @@ def random(name, adv_value, threshold, budget, current_budget, slot_ctrs, histor
 
     maxbidEVER= max(all_bids)
 
+    #bid a random value between 0 and maximum bid all over history
     return toret, uniform(0, maxbidEVER+1)
 
 
