@@ -432,9 +432,36 @@ Given a query:
 \end{frame}
 
 \begin{frame}
-\frametitle{Best Match Considerations}
-We notice that there is an \alert{high} correlation within the first positions on the documents ordered by PageRank and HITS, this means that event if the value of the ranking algorithms are not comparable absolutely, tent to have a \alert{relative} comparability.
+\frametitle{Ranking on Improved Best Match}
+\begin{center}\includegraphics[scale=0.40]{img/Search/Query.PNG} \end{center}
 \end{frame}
+
+\begin{frame}
+\frametitle{Ranking on Best Match}
+\begin{center}
+\includegraphics[scale=0.20]{img/Search/Best.PNG} 
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Ranking on Improved Best Match}
+\begin{center}
+\includegraphics[scale=0.20]{img/Search/Improved.PNG} 
+\end{center}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Considerations}
+First of all we can observe that in both types of matching we found the document we used for generating the query, as expected.\\
+\medskip
+Another thing we notice is that the two result differ only by one document, but these documents have the same matching score, so this difference is due to the order of visiting documents.\\
+\medskip
+We notice that there is an \alert{high} correlation within the first and the last position of the documents ordered by PageRank or by HITS, this means that even if the values of the ranking algorithms are not comparable absolutely, tent to have a \alert{relative} comparability.
+\end{frame}
+
+
+
 
 \section{Auction}
 
