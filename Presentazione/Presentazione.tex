@@ -628,7 +628,7 @@ For the reasons explained before we need a balance between high revenue and high
 \end{frame}
 
 \begin{frame}
-\frametitle{GPS Utility}
+\frametitle{GSP Utility}
 \begin{center}
 \includegraphics[scale=0.46]{img/Auctions/GSP_all_Utility.PNG} 
 \end{center}
@@ -637,7 +637,7 @@ For the reasons explained before we need a balance between high revenue and high
 
 \begin{frame}
 \frametitle{Considerations on GSP advertiser-side}
-We notice that, since GPS is truthful, the bots that offer bids near to their ``real'' value perform \alert{better}, obtaining a higher utility.\\
+We notice that, since GSP is truthful, the bots that offer bids near to their ``real'' value perform \alert{better}, obtaining a higher utility.\\
 \medskip
 For this reason all the bots that tent to lower the bids, straying from the ``real'' value, perform a lot \alert{worst}, obtaining a lower utility. 
 \end{frame}
@@ -710,14 +710,14 @@ Thanks to the heuristic score  we can divide the bots in several groups, the ``b
 
 
 \begin{frame}
-\frametitle{Comparing FPA and GPS results}
+\frametitle{Comparing FPA and GSP results}
 \begin{center}
 \includegraphics[scale=0.46]{img/Auctions/Combined_Utility.PNG} 
 \end{center}
 \end{frame}
 
 \begin{frame}
-\frametitle{Comparing FPA and GPS results}
+\frametitle{Comparing FPA and GSP results}
 \begin{center}
 \includegraphics[scale=0.46]{img/Auctions/Combined_Heuristic.PNG} 
 \end{center}
@@ -725,11 +725,11 @@ Thanks to the heuristic score  we can divide the bots in several groups, the ``b
 
 
 \begin{frame}
-\frametitle{Comparing FPA and GPS results}
+\frametitle{Comparing FPA and GSP results}
 Comparing the auction types, we notice that on a ``fixed'' auction they have the following behaviour:
 \begin{itemize}
-\item FPA auction produce the \alert{highest} revenue for the seller, this follows from the fact that you pay exactly what you bid. As for clients satisfaction, we notice that they have both a \alert{low} heuristic and  utility compared to GPS.
-\item GPS instead produce \alert{lowest} revenue and \alert{high} utility and heuristic score for the client, this is due the nature of GPS:\\
+\item FPA auction produce the \alert{highest} revenue for the seller, this follows from the fact that you pay exactly what you bid. As for clients satisfaction, we notice that they have both a \alert{low} heuristic and  utility compared to GSP.
+\item GSP instead produce \alert{lowest} revenue and \alert{high} utility and heuristic score for the client, this is due the nature of GSP:\\
 the winner of a slot can offer a very high bid without having too much impact on what he pays, because he doesn't pay his bid but the bid immediately lower than his.
 \end{itemize}
 The choice depends of what we want  to ``favour''
@@ -802,7 +802,7 @@ We notice a \alert{worsening} on the best\_preferential\_competitor due the fact
 
 \begin{frame}
 \frametitle{Consideration on GSP}
-In regards to utility and revenue, we notice that GPS shows the \alert{same} behaviour, as said in FPA best\_prefential\_competitor shows a \alert{worsening} for the same reason.\\
+In regards to utility and revenue, we notice that GSP shows the \alert{same} behaviour, as said in FPA best\_prefential\_competitor shows a \alert{worsening} for the same reason.\\
 \medskip
 Instead budget\_saving \alert{improves} his behaviour, still remaining the worst, because in each run the budget is not fixed.
 \end{frame}
