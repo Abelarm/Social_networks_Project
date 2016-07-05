@@ -99,7 +99,7 @@ Here is the complete list of the websites chosen.
 			Recreation        & www.lego.com           & Producer of bilding blocks.                                                                                                                                                                             \\
 			Reference         & www.britannica.com     & Encyclopaedia Britannica Online.\\
 			Science           & www.nasa.gov           & Comprehensive, world-class center for aeronautics                   \\
-			Shopping          & www.amazon.com         & Most know shopping website\\
+			Shopping          & www.amazon.com         & Most known shopping website\\
 			Society           & www.un.org             & Daily United Nations news, documents and publications \\
 			Sports            & www.nba.com            & The official site of the National Basketball Association\\
 			Regional          & www.lonelyplanet.com   & Offers travel advice, detailed maps, travel news                                                   
@@ -142,7 +142,7 @@ This intuition rises from the usual endorsement mode, for example, among academi
 
 \begin{frame}
 \frametitle{Algorithm}
-We can think of PageRank as a kind of “fluid” that circulates through the network, passing from node to node across edges, and pooling at the nodes that are the most important.
+We can think of PageRank as a kind of “fluid” that circulates through the network, passing from node to node across edges, and pooling at most important nodes.
 \center
 \includegraphics[scale=0.3]{img/general_network.png} 
 \end{frame}
@@ -338,7 +338,7 @@ The values are different for the nature of the algorithms.\\
 \medskip
 But we can combine the observations we made earlier to infer the structure of the network, in fact both PageRank and HITS authority have the majority of documents with a low score, and also the variance prove this.\\
 \medskip
-For the HITS hubbiness we notice that the variance is higher, as well as the mean, this mean that the values are more widespread along the network.
+For the HITS hubbiness we notice, instead, that the variance is higher, as well as the mean, this mean that the values are more widespread along the network.
 \end{frame}
 
 \begin{frame}
@@ -676,7 +676,7 @@ The heuristic straddles in the range $ [-1;2]$
 
 \begin{frame}
 \frametitle{Considerations on FPA heuristic}
-Considering the bots who have the higher utility (best\_response\_altruistic, budget\_saving) we notice that they have a very \alert{low} heuristic score, this is due to the fact they tent the obtain the slots that the don't ``want'' but a very \alert{low price} resulting in a high utility.\\
+Considering the bots who have the higher utility (best\_response\_altruistic, budget\_saving) we notice that they have a very \alert{low} heuristic score, this is due to the fact they tent the obtain the slots that they don't ``want'' but at a very \alert{low price} resulting in a high utility.\\
 \medskip
 On the other hand aggressive bidders, tent to have a better heuristic score but a worse utility, since they pay a lot for the slot they obtain.\\
 \medskip
@@ -728,7 +728,7 @@ Thanks to the heuristic score  we can divide the bots in several groups, the ``b
 \frametitle{Comparing FPA and GPS results}
 Comparing the auction types, we notice that on a ``fixed'' auction they have the following behaviour:
 \begin{itemize}
-\item FPA auction produce the \alert{highest} revenue for the seller, this follow from the fact that you pay exactly what you bid. As for clients satisfaction, we notice that they have bot at \alert{low} heuristic and  utility compared to GPS.
+\item FPA auction produce the \alert{highest} revenue for the seller, this follows from the fact that you pay exactly what you bid. As for clients satisfaction, we notice that they have both a \alert{low} heuristic and  utility compared to GPS.
 \item GPS instead produce \alert{lowest} revenue and \alert{high} utility and heuristic score for the client, this is due the nature of GPS:\\
 the winner of a slot can offer a very high bid without having too much impact on what he pays, because he doesn't pay his bid but the bid immediately lower than his.
 \end{itemize}
@@ -739,7 +739,7 @@ The choice depends of what we want  to ``favour''
 \frametitle{Revenue equivalence Theorem}
 As we notice the revenue are different, this is due to the fact that we stopped the auction at 10 steps and moreover the budget of the advertisers are different so using balance algorithms, sometime they end up with not enough budget for bidding.\\
 \medskip
-Bug setting the max step to: $100$, and giving an higher budget equal to all the advertiser we have this result:
+But setting the max step to $100$, and giving an higher budget equal to all the advertisers we have this result:
 \begin{center}
 \includegraphics[scale=0.37]{img/revenuetheorem.png} 
 \end{center}
@@ -750,17 +750,17 @@ Bug setting the max step to: $100$, and giving an higher budget equal to all the
 \frametitle{Running Configuration}
 \begin{itemize}
 \item \textbf{Number of Query Words} 10
-\item \textbf{Number of Auction} 20
+\item \textbf{Number of Auctions} 20
 \item \textbf{Number of Slot for each word} [2, 4]
 \item \textbf{Slot i click-through } [0,1]
-\item \textbf{Number of Advertiser} 6
+\item \textbf{Number of Advertisers} 6
 \begin{itemize}
 \item 1 bot to test and 5 enemies (of the same kind)
 \end{itemize}
 \item \textbf{Values} [0, 20]
 \item \textbf{Budgets}  [10, 50]
 \item \textbf{Minimum Interest Threshold} [5, 15]
-\item \textbf{Number of runs } 500
+\item \textbf{Number of runs} 500
 \end{itemize}
 We choose two bots that have the best result among all the auction, and the worst one.
 \end{frame}
@@ -783,7 +783,7 @@ We choose two bots that have the best result among all the auction, and the wors
 \frametitle{Consideration on FPA}
 As expected the utility shows the \alert{same} behaviour as in the fixed auction and difference on the revenue are almost irrelevant.\\
 \medskip
-We notice \alert{worsening} on the best\_preferential\_competitor due the fact that his behaviour is based on the threshold, that can change on different runs, this leading to more variability. 
+We notice a \alert{worsening} on the best\_preferential\_competitor due the fact that his behaviour is based on the threshold, that can change on different runs, this leading to more variability. 
 \end{frame}
 
 \begin{frame}
